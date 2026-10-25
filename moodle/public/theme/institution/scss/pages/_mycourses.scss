@@ -1,0 +1,357 @@
+// "Mis cursos": catálogo visual inspirado en una biblioteca académica.
+// Todo se construye sobre los controles y datos nativos de block_myoverview.
+body.pagelayout-mycourses,
+body.page-mycourses {
+    // Identidad visual exclusiva de "Mis cursos", inspirada en el panel de
+    // referencia. No cambia enlaces, datos, controles ni permisos de Moodle.
+    font-family: "Hanken Grotesk", Inter, "Segoe UI", Arial, sans-serif;
+
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $canvas !important;
+    }
+
+    #page.drawers .main-inner {
+        padding: clamp(1rem, 2vw, 1.75rem);
+        background-color: transparent !important;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    // Esta vista no usa índice de curso. Moodle puede conservar temporalmente
+    // su botón flotante al cambiar de página; se retira para que no cubra el
+    // encabezado de la vista general.
+    #page.drawers .drawer-left-toggle {
+        display: none !important;
+    }
+
+    // "Mis cursos" sí muestra su título de página (el tema lo oculta en el
+    // resto de vistas). Se presenta compacto, sin el banner de Boost.
+    #page-header {
+        display: block !important;
+        margin: 0;
+
+        .header-actions-container {
+            display: none !important;
+        }
+
+        .page-header-headings,
+        .page-context-header,
+        h1 {
+            display: block !important;
+        }
+
+        h1 {
+            color: #1e293b !important;
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -.025em;
+            opacity: 1 !important;
+        }
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main,
+    section.block_myoverview,
+    section.block_myoverview > .card-body {
+        background-color: transparent !important;
+    }
+
+    section.block_myoverview {
+        border: 0;
+        box-shadow: none;
+
+        &:hover {
+            box-shadow: none;
+        }
+
+        > .card-body {
+            padding: 0;
+        }
+    }
+
+    .block-myoverview {
+        // Barra de herramientas: vista, búsqueda, agrupación y ordenamiento.
+        > [data-region="filter"] {
+            margin: 0 0 1.35rem !important;
+            padding: .75rem;
+            background-color: $white;
+            border: 1px solid $hairline;
+            border-radius: .55rem;
+            box-shadow: 0 2px 8px rgba(#173b82, .045);
+
+            > .d-flex {
+                display: grid !important;
+                grid-template-columns: auto minmax(12rem, 1fr) minmax(9rem, auto) minmax(10rem, auto);
+                gap: .45rem !important;
+
+                > * {
+                    min-width: 0;
+                    margin: 0 !important;
+                }
+
+                // Moodle renderiza el selector de vista al final; visualmente
+                // funciona mejor al inicio, como en un catálogo de cursos.
+                > :has(#displaydropdown) {
+                    grid-column: 1;
+                    grid-row: 1;
+                }
+
+                > :has([data-action="search"]) {
+                    grid-column: 2;
+                    grid-row: 1;
+                }
+
+                > :has(#groupingdropdown) {
+                    grid-column: 3;
+                    grid-row: 1;
+                }
+
+                > :has(#sortingdropdown) {
+                    grid-column: 4;
+                    grid-row: 1;
+                }
+            }
+
+            .btn,
+            .form-control,
+            .input-group {
+                min-height: 2.5rem;
+                border-radius: .25rem;
+            }
+
+            .btn {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: .42rem .65rem;
+                color: $dark;
+                font-size: .84rem;
+                background-color: $white;
+                border-color: #d4dbea;
+                box-shadow: none;
+
+                &:hover,
+                &:focus-visible,
+                &[aria-expanded="true"] {
+                    color: darken($primary, 7%);
+                    background-color: $sunken;
+                    border-color: #9db4df;
+                }
+            }
+
+            #displaydropdown {
+                width: auto;
+                min-width: 6.75rem;
+                color: $primary;
+                font-weight: 700;
+            }
+
+            [data-action="search"] {
+                min-height: 2.5rem;
+                padding: .42rem .65rem;
+                font-size: .84rem;
+                background-color: $white;
+                border-color: #d4dbea;
+            }
+
+            // search_input_auto agrega varios elementos alrededor del input;
+            // todos deben compartir las esquinas rectas de la referencia.
+            :has([data-action="search"]) {
+                .input-group,
+                .input-group > *,
+                .form-control,
+                .btn,
+                [data-action="clearsearch"] {
+                    border-radius: .25rem !important;
+                }
+            }
+        }
+    }
+
+    .block_myoverview [data-region="courses-view"] {
+        .card-grid[data-region="card-deck"] {
+            display: grid;
+            // Un poco más grandes que antes (18rem). `min(100%, …)` mantiene el
+            // comportamiento responsive: en pantallas estrechas la tarjeta baja
+            // a ancho completo en una sola columna.
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 20.5rem), 20.5rem));
+            gap: 1.05rem;
+            // El bloque de columnas se centra en el espacio disponible, pero
+            // las tarjetas se colocan de izquierda a derecha dentro de él: al
+            // añadir cursos, la nueva fila empieza por la izquierda (no se
+            // recentra cada fila).
+            justify-content: center;
+            margin: 0;
+
+            > .col {
+                display: block !important;
+                width: 100%;
+                max-width: none;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        .course-card {
+            min-height: 0;
+            overflow: hidden;
+            background-color: $white;
+            border: 1px solid $hairline;
+            border-radius: .55rem;
+            box-shadow: 0 5px 18px rgba(#173b82, .075);
+            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+
+            &:hover,
+            &:focus-within {
+                border-color: rgba(#2c58ba, .38);
+                box-shadow: 0 12px 28px rgba(#173b82, .14);
+                transform: translateY(-3px);
+            }
+
+            > a {
+                display: block;
+                overflow: hidden;
+                background-color: $sunken;
+            }
+
+            .card-img-top {
+                width: 100%;
+                height: 10rem;
+                min-height: 0;
+                aspect-ratio: auto;
+                background-position: center;
+                background-size: cover;
+                border-radius: .5rem .5rem 0 0;
+                transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+            }
+
+            &:hover .card-img-top,
+            &:focus-within .card-img-top {
+                transform: scale(1.025);
+            }
+
+            .course-info-container {
+                min-height: 6.4rem;
+                padding: .85rem .9rem .7rem !important;
+            }
+
+            .coursename {
+                color: #14213a;
+                font-size: .95rem;
+                font-weight: 700;
+                line-height: 1.35;
+                text-decoration: none;
+
+                &:hover,
+                &:focus-visible {
+                    color: $primary;
+                }
+            }
+
+            .categoryname {
+                display: inline-flex;
+                width: fit-content;
+                margin-top: .35rem;
+                padding: .15rem .4rem;
+                color: #21499d;
+                font-size: .7rem;
+                font-weight: 650;
+                background-color: $sunken;
+                border-radius: .2rem;
+            }
+
+            .card-footer {
+                min-height: 2.65rem;
+                padding: .5rem .75rem;
+                background-color: $white !important;
+                border-top: 1px solid rgba($dark, .065) !important;
+            }
+
+            .progress {
+                height: .45rem;
+                overflow: hidden;
+                background-color: $sunken;
+                border-radius: .2rem;
+
+                .progress-bar {
+                    background-color: $primary;
+                }
+            }
+        }
+
+        // Las vistas Lista y Resumen siguen siendo opciones nativas y reciben
+        // el mismo lenguaje visual, sin cambiar su comportamiento.
+        .course-listitem,
+        .course-summaryitem {
+            margin-bottom: .75rem;
+            padding: .85rem !important;
+            background-color: $white;
+            border: 1px solid rgba($dark, .09) !important;
+            border-radius: .3rem !important;
+            box-shadow: 0 3px 10px rgba($dark, .045);
+
+            .list-image,
+            .summary-image {
+                min-height: 6.5rem;
+                background-position: center;
+                background-size: cover;
+                border-radius: .25rem !important;
+            }
+
+            .coursename {
+                color: $dark;
+                font-size: 1rem;
+                font-weight: 700;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        .block-myoverview > [data-region="filter"] > .d-flex {
+            grid-template-columns: auto minmax(0, 1fr);
+
+            > :has(#displaydropdown),
+            > :has([data-action="search"]),
+            > :has(#groupingdropdown),
+            > :has(#sortingdropdown) {
+                grid-column: auto;
+                grid-row: auto;
+            }
+        }
+
+        .block_myoverview [data-region="courses-view"] .card-grid[data-region="card-deck"] {
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 20.5rem), 20.5rem));
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        #page.drawers .main-inner {
+            padding: .8rem;
+        }
+
+        .block-myoverview > [data-region="filter"] > .d-flex,
+        .block_myoverview [data-region="courses-view"] .card-grid[data-region="card-deck"] {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .block-myoverview > [data-region="filter"] #displaydropdown {
+            width: 100%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        #page-header {
+            margin-bottom: 1rem;
+
+            h1 {
+                font-size: 1.65rem;
+            }
+        }
+    }
+}

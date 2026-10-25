@@ -1,0 +1,325 @@
+// Índice de Administración del sitio (`/admin/search.php`, sin búsqueda).
+//
+// Se adopta el mismo lenguaje de tarjetas de "Mi Perfil": lienzo fuera,
+// cada categoría de ajustes como una tarjeta blanca con filete de acento en
+// el título y los enlaces en filas separadas por líneas finas. Se retira el
+// marco/recuadro vacío que hay sobre el buscador. Solo estilo.
+
+body#page-admin-search {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    // UNA sola superficie blanca (el contenedor principal). El buscador y las
+    // pestañas iban en cajas blancas independientes apiladas sobre el lienzo;
+    // ahora todo va sobre este único panel blanco.
+    #page .main-inner,
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08) !important;
+        border-radius: $border-radius-lg !important;
+        box-shadow: $shadow-sm !important;
+    }
+
+    // …y lo de dentro es transparente para que no haya cajas dentro de cajas.
+    #page-content,
+    #region-main-box,
+    #region-main,
+    #region-main > .box,
+    #region-main > .card,
+    #region-main-settings-menu,
+    .adminpagetitle,
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item,
+    .tabtree,
+    .tab-content,
+    .tab-content > .tab-pane,
+    .tab-content .container-fluid,
+    form[action*="search.php"],
+    .adminsettingssearch,
+    [data-region="admin-search"] {
+        background-color: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    // --- Buscador de ajustes --------------------------------------------
+    // El buscador viene envuelto en su propia caja (borde + sombra + esquinas)
+    // que se recorta contra el panel blanco compartido. Se elimina esa caja
+    // (NO el panel blanco general) y el campo pasa a ocupar todo el ancho.
+    .page-header,
+    #page-header,
+    .header-actions-container,
+    #region-main > form:first-child,
+    #region-main > .simplesearchform,
+    .simplesearchform,
+    .comboboxsearch,
+    form[action*="search.php"],
+    .adminsearchform,
+    #region-main-settings-menu,
+    [data-region="admin-search"],
+    [data-region="settings-search"] {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 0 1.5rem !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    // El grupo input + botón: a todo el ancho, borde fino, sin sombra de caja.
+    .simplesearchform .input-group,
+    .comboboxsearch .input-group,
+    .adminsearchform .input-group,
+    form[action*="search.php"] .input-group,
+    .simplesearchform form,
+    form[action*="search.php"] form {
+        display: flex;
+        width: 100% !important;
+        max-width: none !important;
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid rgba($dark, .18);
+        border-radius: $border-radius;
+        box-shadow: none;
+    }
+
+    .simplesearchform .form-control,
+    .simplesearchform input[type="text"],
+    .comboboxsearch input,
+    form[action*="search.php"] .form-control,
+    form[action*="search.php"] input[type="text"] {
+        flex: 1 1 auto;
+        border: 0 !important;
+        background-color: $surface !important;
+        box-shadow: none !important;
+    }
+
+    .simplesearchform .btn,
+    .comboboxsearch .btn,
+    form[action*="search.php"] .btn {
+        flex: 0 0 auto;
+        color: $white !important;
+        background-color: $interactive !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    // --- Pestañas (General / Usuarios / Cursos …) -------------------------
+    ul.nav-tabs {
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid $hairline;
+
+        .nav-link {
+            padding: .6rem .9rem;
+            color: $ink-muted;
+            font-weight: 600;
+            background: transparent;
+            border: 0;
+            border-bottom: 2px solid transparent;
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                border-bottom-color: rgba($primary, .3);
+            }
+
+            &.active {
+                color: $primary;
+                background: transparent;
+                border-bottom-color: $primary;
+            }
+        }
+    }
+
+    // --- Cada categoría de ajustes: sección sobre el panel blanco --------
+    // (Sin caja propia: sobre la superficie blanca se separan con una línea
+    // fina, para no anidar tarjetas dentro de tarjetas.)
+    .tab-content .container-fluid {
+        > hr,
+        .row > .col-sm-3:empty {
+            display: none;
+        }
+
+        > .row {
+            display: block;
+            margin: 0;
+            padding: 1.35rem 0 1.4rem;
+            background-color: transparent;
+            border: 0;
+            border-top: 1px solid $hairline;
+            box-shadow: none;
+
+            &:first-of-type {
+                padding-top: .5rem;
+                border-top: 0;
+            }
+
+            // Todas las columnas a bloque y ancho completo — en la primera
+            // pestaña Moodle usa `.col`, en las demás `.col-sm-9`; se cubren
+            // todas para que el layout sea idéntico en todas las pestañas.
+            > [class*="col-"],
+            > .col {
+                width: 100%;
+                max-width: 100%;
+                flex: none;
+                padding: 0;
+            }
+
+            // Título de la categoría con filete de acento.
+            > .col-sm-3 {
+                h4,
+                h3 {
+                    position: relative;
+                    margin: 0 0 .75rem;
+                    padding-left: .7rem;
+                    color: $dark;
+                    font-family: $font-family-sans-serif;
+                    font-size: 1.02rem;
+                    font-weight: 700;
+                    letter-spacing: -.012em;
+
+                    &::before {
+                        position: absolute;
+                        top: .12em;
+                        bottom: .12em;
+                        left: 0;
+                        width: 3px;
+                        background-color: $accent;
+                        border-radius: 2px;
+                        content: "";
+                    }
+
+                    a {
+                        color: inherit;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            // Lista de enlaces: SIEMPRE tres columnas (dos en tablet, una en
+            // móvil), con una viñeta de acento delante de cada enlace.
+            ul.list-unstyled {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: .1rem 1.6rem;
+                margin: 0;
+
+                @include media-breakpoint-down(lg) {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                @include media-breakpoint-down(md) {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+
+                > li {
+                    display: flex;
+                    align-items: baseline;
+                    gap: .55rem;
+                    padding: .34rem 0;
+                    border-top: 0;
+
+                    &::before {
+                        flex: 0 0 auto;
+                        width: .34rem;
+                        height: .34rem;
+                        background-color: $primary;
+                        border-radius: 50%;
+                        transform: translateY(-.08rem);
+                        content: "";
+                    }
+
+                    > a {
+                        color: $link-color;
+                        font-weight: 500;
+                        text-decoration: none;
+
+                        &:hover,
+                        &:focus-visible {
+                            color: $link-hover-color;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                // Sub-listas anidadas: en bloque, ocupando toda la fila, con
+                // viñeta hueca para distinguir el segundo nivel.
+                ul.list-unstyled {
+                    display: block;
+                    grid-column: 1 / -1;
+                    margin-top: .3rem;
+                    padding-left: 1.1rem;
+
+                    > li {
+                        padding: .28rem 0;
+
+                        &::before {
+                            width: .34rem;
+                            height: .34rem;
+                            background-color: transparent;
+                            border: 1.5px solid $primary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// === Buscador de ajustes en cualquier página de administración =============
+// Va dentro de `.header-actions-container`, al que el tema le pone un
+// recuadro blanco (borde + sombra + esquinas). En contexto de administración
+// ese recuadro sobra: se elimina y el campo ocupa todo el ancho.
+body.path-admin,
+body[id^="page-admin-"],
+body#page-user-editadvanced {
+    .header-actions-container:not(:empty) {
+        margin: 0 0 1.5rem !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .header-actions-container .simplesearchform,
+    .header-actions-container .comboboxsearch,
+    .header-actions-container form,
+    .header-actions-container .input-group {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .header-actions-container .input-group {
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid rgba($dark, .18);
+        border-radius: $border-radius;
+        box-shadow: none;
+
+        .form-control,
+        input[type="text"] {
+            flex: 1 1 auto;
+            border: 0 !important;
+            background-color: $surface !important;
+            box-shadow: none !important;
+        }
+
+        .btn {
+            flex: 0 0 auto;
+            color: $white !important;
+            background-color: $interactive !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+        }
+    }
+}

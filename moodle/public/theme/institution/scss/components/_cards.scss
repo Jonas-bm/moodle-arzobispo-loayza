@@ -1,0 +1,79 @@
+.card {
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    transition: box-shadow .15s ease-in-out;
+
+    &:hover {
+        box-shadow: $shadow-md;
+    }
+}
+
+//
+// Bloques del Área personal (Línea de tiempo, Calendario...) — Boost los
+// renderiza como .card, así que heredan lo de arriba; acá solo reforzamos
+// el header para que se note más jerarquía.
+//
+.block {
+    .card-title {
+        font-weight: 600;
+        color: $dark;
+    }
+}
+
+// Estados vacíos ("No hay cursos actuales", "No hay eventos") — más aire
+// y el ícono un poco menos apagado.
+[data-region="no-courses-empty-message"],
+[data-region="no-events-empty-message"] {
+    padding: map-get($spacers, 4) 0;
+
+    img {
+        opacity: .65;
+    }
+}
+
+//
+// Listado de cursos de la Página principal ("Cursos disponibles") — usa
+// .coursebox, que en Boost es solo un div con borde fino, sin la
+// elevación/hover que sí tienen las .card.
+//
+#frontpage-available-course-list,
+#frontpage-course-list,
+.course-search-result {
+    > h2 {
+        margin: 0 0 1rem;
+        color: $dark;
+        font-size: clamp(1.35rem, 2vw, 1.8rem);
+        font-weight: 700;
+        letter-spacing: -.02em;
+    }
+
+    .coursebox {
+        margin-bottom: .75rem;
+        padding: 1rem;
+        background-color: $white;
+        border: 1px solid rgba($dark, .07);
+        border-radius: .75rem;
+        box-shadow: 0 4px 14px rgba($dark, .055);
+        transition: box-shadow .15s ease-in-out, transform .15s ease-in-out;
+
+        &:hover {
+            box-shadow: $shadow-md;
+            transform: translateY(-2px);
+        }
+
+        > .info > .coursename a {
+            font-weight: 600;
+            color: $primary;
+        }
+
+        .content .coursecat {
+            display: inline-block;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: $secondary;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+    }
+}
+

@@ -1,0 +1,117 @@
+// Web fonts. Bunny Fonts es un espejo de Google Fonts con la misma API pero
+// sin cookies ni registro de IP (relevante para un producto de instituciones
+// públicas: varias autoridades de protección de datos de la UE han declarado
+// ilegal el hotlinking a fonts.gstatic.com). Endurecimiento posterior:
+// auto-alojar los .woff2 dentro del tema y servirlos con @font-face.
+// El @import CSS debe ir en la primera línea del SCSS compilado.
+// (import de fuentes movido a post.scss / lib.php)
+
+//
+// Institution — design tokens ("Aula")
+// Variables Sass evaluadas antes de compilar Bootstrap/Boost.
+//
+
+// === Paleta ===================================================================
+// Arzobispo Loaysa: azul de la referencia institucional y rojo del escudo.
+// Se conservan los colores semánticos para avisos, errores y estados.
+$primary:   #1c48a9;   // marca: cabecera, sidebar, acentos estructurales
+$secondary: #5b6675;   // metadatos, texto de apoyo
+$success:   #15803d;
+$info:      #0b6bb3;
+$warning:   #b45309;
+$danger:    #b3261e;
+$light:     #edeef1;   // Bootstrap $light — alineado a $sunken (ver abajo)
+$dark:      #1b232e;   // tinta
+
+// === Superficies — blanco + dos grises, y nada más =========================
+// Regla del tema: ningún color se usa como fondo salvo estos tres valores
+// neutros. Blanco para tarjetas, paneles y la barra superior; un gris muy
+// claro para el lienzo del sitio; un segundo gris, algo más marcado, para
+// pozos, campos de formulario, cabeceras de tabla y estados hover/seleccionado.
+// Azul y rojo identifican la marca; las superficies de contenido siguen neutras.
+$surface:     #ffffff;   // tarjetas, paneles, navbar
+$canvas:      #f6f7f9;   // lienzo del sitio (fondo detrás de las tarjetas)
+$sunken:      #edeef1;   // pozos, inputs, hover, cabeceras de tabla, seleccionado
+
+$ink-muted:   #5b6675;
+$hairline:    #e5e7eb;   // líneas divisorias (gris neutro)
+$interactive: #1c48a9;   // enlaces, botón primario, anillo de foco — AA sobre blanco
+$accent:      #d00010;   // rojo del escudo: acentos institucionales
+$accent-soft: $sunken;   // los antiguos fondos "de acento" pasan al gris neutro
+
+// Superficie general del sitio (fondo detrás de las tarjetas).
+$body-bg: $canvas;
+
+// Enlaces y acciones usan el azul institucional, con contraste sobre blanco.
+$link-color:            $interactive;
+$link-decoration:       none;
+$link-hover-color:      darken($interactive, 12%);
+$link-hover-decoration: underline;
+
+// === Tipografía ==============================================================
+// Hanken Grotesk en TODO —interfaz, cuerpo y titulares—: una grotesca
+// contemporánea, con carácter y muy legible a tamaños pequeños, con cobertura
+// completa del español. Los titulares se distinguen por peso (700) y tracking
+// ajustado, no por familia. (Inter queda de reserva; Source Serif 4 ya no se
+// usa pero sus @font-face se conservan por si se quiere un titular serif
+// puntual.)
+$font-family-sans-serif:
+    "Hanken Grotesk",
+    Inter,
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Arial,
+    sans-serif;
+$font-family-serif:
+    "Source Serif 4",
+    Georgia,
+    "Times New Roman",
+    serif;
+
+$headings-font-family: $font-family-sans-serif;
+$headings-font-weight: 700;
+$headings-color:       $dark;
+$headings-line-height: 1.25;
+$line-height-base:     1.6;
+
+// === Forma ==================================================================
+$border-radius:    .625rem;
+$border-radius-lg: .875rem;
+$border-radius-sm: .375rem;
+
+// === Elevación — tokens propios, reutilizados en post.scss ===================
+$shadow-sm: 0 1px 2px rgba(27, 35, 46, .06), 0 1px 3px rgba(27, 35, 46, .04);
+$shadow-md: 0 6px 16px rgba(27, 35, 46, .08);
+$shadow-lg: 0 16px 40px rgba(27, 35, 46, .12);
+
+// === Barra superior =========================================================
+// Un poco más alta para alojar con claridad el título de la vista activa y
+// los controles de usuario.
+$navbar-height: 68px;
+
+// === Foco global ============================================================
+// Señal accesible pero fina: anillo de 3px con el azul interactivo (se usa
+// como outline en enlaces y botones para navegación por teclado).
+$focus-ring-width:   .1875rem;
+$focus-ring-opacity: .34;
+$focus-ring-color:   rgba($interactive, $focus-ring-opacity);
+
+// Foco de CAMPOS (inputs, textarea, selects) y botones: Bootstrap dibuja un
+// halo de .25rem que resulta demasiado grueso. Se afina a 2px con poca
+// opacidad, y el borde del campo pasa a azul de marca al enfocar. Aplica a
+// todos los form-control del sitio.
+$input-btn-focus-width:         .125rem;
+$input-btn-focus-color-opacity: .16;
+$input-btn-focus-color:         rgba($interactive, $input-btn-focus-color-opacity);
+$input-btn-focus-box-shadow:    0 0 0 $input-btn-focus-width $input-btn-focus-color;
+$input-focus-border-color:      $primary;
+$input-focus-box-shadow:        $input-btn-focus-box-shadow;
+$form-select-focus-box-shadow:  $input-btn-focus-box-shadow;
+
+// === Cards / bloques ========================================================
+// Timeline, Calendario, etc. se renderizan como .card en Boost.
+$card-cap-bg:       $sunken;
+$card-border-color: $hairline;
+$card-spacer-y:     1rem;
+$card-spacer-x:     1.25rem;

@@ -1,0 +1,79 @@
+@include media-breakpoint-down(sm) {
+    body.path-calendar .maincalendar {
+        padding: map-get($spacers, 2);
+    }
+
+    body#page-site-index {
+        .secondary-navigation {
+            border-radius: .6rem;
+
+            .navigation {
+                padding-inline: .25rem;
+            }
+        }
+
+        .course-content,
+        .course-section {
+            padding: .65rem;
+            border-radius: .65rem;
+        }
+    }
+
+    .dropdown-menu {
+        max-width: calc(100vw - 1rem);
+        max-height: min(20rem, calc(100vh - 4rem));
+    }
+}
+
+// Respeta a usuarios que prefieren reducir movimiento.
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .coursebox,
+    .navbar .nav-link {
+        transition: none;
+    }
+
+    .dropdown-menu.show,
+    .form-autocomplete-suggestions:not([aria-hidden="true"]),
+    .institution-form-select__menu:not([hidden]) {
+        animation: none;
+    }
+
+    .institution-form-select__trigger,
+    .institution-form-select__chevron,
+    .institution-form-select__option {
+        transition: none;
+    }
+
+    body#page-site-index #frontpage-available-course-list .coursebox:hover,
+    body#page-site-index #frontpage-available-course-list .coursebox:focus-within,
+    body#page-site-index .course-section .activity-item:hover,
+    body#page-site-index .course-section .activity-item:focus-within {
+        transform: none;
+    }
+
+    body#page-site-index .course-section .activity-item {
+        transition: none;
+    }
+
+    .drawer-left,
+    #page.drawers .drawer-left-toggle {
+        transition: none;
+    }
+
+    body.pagelayout-mydashboard .block_myoverview [data-region="courses-view"],
+    body.pagelayout-mycourses .block_myoverview [data-region="courses-view"],
+    body.page-mycourses .block_myoverview [data-region="courses-view"] {
+        .course-card,
+        .course-card .card-img-top {
+            transition: none;
+        }
+
+        .course-card:hover,
+        .course-card:focus-within,
+        .course-card:hover .card-img-top,
+        .course-card:focus-within .card-img-top {
+            transform: none;
+        }
+    }
+}

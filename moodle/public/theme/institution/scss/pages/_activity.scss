@@ -1,0 +1,390 @@
+//
+// Vista de actividad (tareas, cuestionarios, foros, recursos, páginas…).
+// La pantalla donde el alumno realmente trabaja. Se conservan por completo
+// los datos, controles y estados de Moodle; solo se ordenan en superficies
+// legibles con la jerarquía del tema.
+//
+body.pagelayout-incourse[class*="path-mod-"] {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-md;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+
+    // Cabecera de la actividad: la ficha de información (fechas de entrega,
+    // intentos, calificación…) que Moodle inserta arriba.
+    .activity-header {
+        margin-bottom: 1.25rem;
+
+        &:not(:empty) {
+            padding: 1rem 1.15rem;
+            background-color: $accent-soft;
+            border: 1px solid rgba($accent, .22);
+            border-radius: $border-radius;
+        }
+
+        .activity-description {
+            margin-top: .85rem;
+            padding-top: .85rem;
+            border-top: 1px solid rgba($dark, .08);
+        }
+    }
+
+    // "Información de la actividad": chips de estado (Pendiente, Entregado,
+    // Con retraso…). Se les da forma de etiqueta y color semántico.
+    [data-region="activity-information"],
+    .activity-information {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+
+        .badge,
+        .automatic-completion-conditions .badge,
+        .btn.btn-outline-secondary {
+            padding: .4rem .7rem;
+            font-size: .8rem;
+            font-weight: 600;
+            border-radius: 999px;
+        }
+    }
+
+    // Descripción / enunciado del recurso.
+    .box.generalbox,
+    #intro,
+    .activity-description,
+    .no-overflow {
+        line-height: 1.65;
+    }
+
+    // Estado de la entrega y tablas de feedback (mod_assign, mod_quiz).
+    .submissionstatustable,
+    .feedback,
+    .generaltable,
+    .quizattemptsummary {
+        width: 100%;
+        margin: 0 0 1.25rem;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+
+        th,
+        td {
+            padding: .8rem 1rem;
+            border: 0;
+            border-bottom: 1px solid $hairline;
+            vertical-align: middle;
+        }
+
+        th {
+            color: $ink-muted;
+            font-weight: 600;
+            background-color: $sunken;
+        }
+
+        tr:last-child th,
+        tr:last-child td {
+            border-bottom: 0;
+        }
+    }
+
+    // Botón de acción principal (Agregar entrega, Intentar cuestionario…).
+    .singlebutton .btn-primary,
+    .box.generalbox .btn-primary {
+        padding: .6rem 1.4rem;
+        font-weight: 600;
+    }
+
+    // Navegación anterior / siguiente entre actividades.
+    .activity-navigation {
+        margin-top: 1.75rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid $hairline;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .55rem 1rem;
+            color: $primary;
+            font-weight: 600;
+            background-color: $surface;
+            border: 1px solid rgba($primary, .2);
+            border-radius: $border-radius;
+
+            &:hover,
+            &:focus-visible {
+                background-color: $sunken;
+                border-color: rgba($primary, .38);
+            }
+        }
+
+        #next-activity-link .btn::after {
+            content: "\2192";
+        }
+
+        #prev-activity-link .btn::before {
+            content: "\2190";
+        }
+    }
+}
+
+// Foro: lista de discusiones como tarjetas apiladas.
+body.path-mod-forum {
+    .discussion-list,
+    table.forumheaderlist {
+        border: 0;
+
+        tbody tr {
+            background-color: $surface;
+        }
+
+        .topic,
+        td.topic {
+            font-weight: 600;
+        }
+    }
+
+    .forumpost,
+    .forum-post-container {
+        margin-bottom: 1rem;
+        background-color: $surface;
+        border: 1px solid $hairline !important;
+        border-radius: $border-radius;
+        box-shadow: $shadow-sm;
+
+        .header,
+        .post-content-container {
+            padding: 1rem 1.15rem;
+        }
+    }
+}
+
+// Cuestionario en curso: la barra de navegación entre preguntas.
+body.path-mod-quiz {
+    #mod_quiz_navblock .qnbutton {
+        border-radius: $border-radius-sm;
+
+        &.thispage {
+            box-shadow: 0 0 0 2px $primary;
+        }
+
+        &.correct {
+            background-color: rgba($success, .15);
+        }
+
+        &.notyetanswered {
+            background-color: $surface;
+        }
+    }
+
+    .que {
+        margin-bottom: 1.25rem;
+        padding: 1.15rem;
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+
+        .qtext {
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    body.pagelayout-incourse[class*="path-mod-"] {
+        #page.drawers .main-inner {
+            border-radius: $border-radius;
+        }
+
+        .activity-navigation .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}
+// Comentarios de entrega: ampliar el editor nativo y ordenar sus acciones.
+body.path-mod-assign {
+    .comment-area {
+        width: 100%;
+        max-width: none;
+        margin-top: .75rem;
+        padding: 0;
+
+        textarea {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            min-height: 7.5rem;
+            padding: .85rem 1rem;
+            color: $dark;
+            font: inherit;
+            line-height: 1.6;
+            background-color: $surface;
+            border: 1px solid $hairline;
+            border-radius: $border-radius;
+            resize: vertical;
+            transition: border-color .16s ease, box-shadow .16s ease;
+
+            &:focus {
+                border-color: $interactive;
+                outline: 0;
+                box-shadow: 0 0 0 .15rem rgba($interactive, .15);
+            }
+        }
+
+        .fd {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            justify-content: flex-end;
+            margin-top: .75rem;
+
+            > span {
+                display: none; // Separador decorativo " | " del marcado nativo.
+            }
+
+            a {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 2.75rem;
+                padding: .55rem 1rem;
+                font-size: .9rem;
+                font-weight: 600;
+                text-decoration: none;
+                background-color: $surface;
+                border: 1px solid rgba($interactive, .3);
+                border-radius: $border-radius-sm;
+
+                &:hover {
+                    background-color: $sunken;
+                }
+
+                &:focus-visible {
+                    outline: 2px solid $interactive;
+                    outline-offset: 3px;
+                }
+
+                &[id^="comment-action-post-"] {
+                    color: $white !important;
+                    background-color: $interactive;
+                    border-color: $interactive;
+
+                    &:hover {
+                        background-color: darken($interactive, 7%);
+                    }
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .submissionstatustable {
+            table,
+            tbody {
+                display: block;
+                width: 100%;
+            }
+
+            tr {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            th,
+            td {
+                display: block;
+                width: 100% !important;
+                min-width: 0;
+            }
+        }
+    }
+}
+
+
+// La tarea debe conservar su identidad antes de las instrucciones y la entrega.
+body.path-mod-assign {
+    #page-header {
+        display: block !important;
+        margin-bottom: 1.25rem;
+
+        .page-context-header {
+            display: flex !important;
+            align-items: center;
+        }
+
+        .page-header-headings,
+        h1 {
+            display: block !important;
+        }
+
+        h1 {
+            font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+            line-height: 1.3;
+        }
+    }
+
+    #region-main .activity-header:not(:empty) {
+        background-color: $white;
+        border-color: $hairline;
+    }
+}
+
+body.path-mod-assign #page-header {
+    padding: 0;
+
+    .header-actions-container:not(:has(button, a, input, select)) {
+        display: none !important;
+    }
+
+    .page-context-header {
+        gap: .75rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-header-image {
+        flex-shrink: 0;
+        margin: 0;
+    }
+
+    .page-header-headings {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}
+
+body.path-mod-assign {
+    .secondary-navigation:not(:has(.nav-link)) {
+        display: none;
+    }
+
+    #page-header .page-context-header {
+        flex-wrap: nowrap !important;
+    }
+
+    #page-header .page-header-image,
+    #page-header .activityiconcontainer {
+        width: 44px;
+        max-width: 44px;
+        height: 44px;
+        padding: 0;
+    }
+}

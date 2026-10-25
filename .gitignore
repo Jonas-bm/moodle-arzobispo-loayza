@@ -1,0 +1,27 @@
+# Configuración y credenciales locales. Las plantillas sí se entregan.
+/.env
+/.env.*
+!/.env.example
+/moodle/config.php
+/moodle/.demo-*.json
+/.demo-*.json
+
+# Datos y respaldos locales: nunca deben formar parte del repositorio.
+/moodledata/
+/respaldos/
+/backups/
+/*.sql
+/*.sql.gz
+/*.dump
+
+# Herramienta y evidencias usadas únicamente para la DEMO local.
+/herramientas/datos_demo.php
+/evidencias/
+
+# Archivos del sistema y temporales.
+.DS_Store
+__pycache__/
+*.log
+
+# Archivos temporales de Word/Office.
+~$*

@@ -1,0 +1,415 @@
+// Campos de texto: al enfocar, un marco fino (borde azul + anillo de 2px con
+// poca opacidad), nunca el halo grueso de .25rem de Bootstrap. Aplica a todo
+// input de texto, área de texto y grupo de entrada del sitio.
+.form-control,
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
+textarea,
+.form-autocomplete-selection ~ input {
+    transition: border-color .16s ease, box-shadow .16s ease;
+
+    &:focus,
+    &:focus-visible {
+        border-color: $primary !important;
+        box-shadow: 0 0 0 .125rem rgba($interactive, .16) !important;
+        outline: 0 !important;
+    }
+}
+
+// Altura uniforme para inputs de una línea, igual que los <select>, en todas
+// las vistas.
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
+.form-control:not(textarea):not(.btn):not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
+    min-height: 2.85rem;
+}
+
+// === Controles <select> ===================================================
+// CAMPO CERRADO: misma altura, borde, relleno y foco que el resto de campos,
+// en cualquier vista. Se cubre `select` a secas además de `.form-select` /
+// `.custom-select` porque algunos formularios de Moodle (crear usuario,
+// ajustes) no ponen clase.
+select,
+select.form-select,
+select.custom-select,
+.form-select {
+    appearance: none;
+    box-sizing: border-box;
+    height: 2.85rem;
+    min-height: 2.85rem;
+    max-height: 2.85rem;
+    padding: .5rem 2.5rem .5rem .85rem;
+    color: $dark;
+    font-size: .95rem;
+    line-height: 1.3;
+    background-color: $surface;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%231d4b78' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .85rem center;
+    background-size: 1rem;
+    border: 1px solid rgba($dark, .18);
+    border-radius: $border-radius;
+    box-shadow: 0 1px 2px rgba($dark, .04);
+    transition: border-color .18s ease, box-shadow .18s ease;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &:hover:not(:disabled) {
+        border-color: rgba($primary, .48);
+    }
+
+    &:focus,
+    &:focus-visible {
+        border-color: $primary;
+        box-shadow: 0 0 0 .125rem rgba($interactive, .16);
+        outline: 0;
+    }
+
+    &:disabled {
+        color: $secondary;
+        background-color: $light;
+        cursor: not-allowed;
+        opacity: .8;
+    }
+}
+
+// Los <select multiple> / con size son listas: altura automática.
+select[multiple],
+select[size] {
+    appearance: auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding-right: .85rem;
+    background-image: none;
+}
+
+// === Lista desplegable con el estilo del tema (Chrome: base-select) ========
+// Donde el navegador lo soporta, la lista de opciones deja de ser el panel
+// oscuro del sistema y adopta el lenguaje del tema. El campo cerrado se
+// mantiene con su altura fija: se fuerza `inline-flex` de una sola línea y se
+// recorta el contenido para que NUNCA crezca de alto.
+@supports (appearance: base-select) {
+    select:not([multiple]):not([size]) {
+        appearance: base-select;
+        display: inline-flex !important;
+        align-items: center;
+        gap: .5rem;
+        height: 2.85rem !important;
+        padding: .5rem .8rem !important;
+        overflow: hidden;
+        background-image: none;              // se usa ::picker-icon
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &::picker-icon {
+            flex: 0 0 auto;
+            margin-left: auto;
+            color: $primary;
+            transition: transform .2s ease;
+        }
+
+        &:open::picker-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    // El texto de la opción elegida: una sola línea, con elipsis.
+    select:not([multiple]):not([size])::selectedcontent {
+        display: block;
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    // El panel: mismo ancho que el campo, superficie blanca del tema.
+    ::picker(select) {
+        appearance: base-select;
+        box-sizing: border-box;
+        min-width: anchor-size(width, auto);
+        max-height: 20rem;
+        margin-top: .3rem;
+        padding: .35rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        color: $dark;
+        background-color: $surface;
+        border: 1px solid rgba($dark, .12);
+        border-radius: $border-radius;
+        box-shadow: 0 16px 40px rgba($dark, .18);
+    }
+
+    select option {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        min-height: 2.35rem;
+        padding: .5rem .7rem;
+        color: $dark;
+        background-color: $surface;
+        border-radius: $border-radius-sm;
+        transition: color .12s ease, background-color .12s ease;
+
+        &:hover,
+        &:focus {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+        }
+
+        &:checked {
+            color: darken($primary, 8%);
+            font-weight: 700;
+            background-color: $sunken;
+        }
+
+        &:disabled {
+            color: $secondary;
+            opacity: .55;
+        }
+
+        &::checkmark {
+            order: 99;
+            margin-left: auto;
+            color: $primary;
+        }
+    }
+
+    // Encabezados de grupo ("Habilitado" / "Deshabilitado").
+    select optgroup {
+        padding: .55rem .7rem .25rem;
+        color: $ink-muted;
+        font-size: .7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        background-color: transparent;
+    }
+}
+
+// Menús que Moodle presenta visualmente como selects (Línea de tiempo,
+// Mis cursos, acciones, filtros y autocompletados). Bootstrap los inserta con
+// .show, por lo que la animación funciona en todos los navegadores soportados.
+@keyframes institution-dropdown-in {
+    from {
+        opacity: 0;
+        clip-path: inset(0 0 35% 0 round .75rem);
+    }
+
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0 round .75rem);
+    }
+}
+
+.dropdown-menu {
+    min-width: 13rem;
+    max-height: min(24rem, calc(100vh - 5rem));
+    margin-top: .3rem !important;
+    padding: .45rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: $white;
+    border: 1px solid rgba($dark, .09);
+    border-radius: .75rem;
+    box-shadow: 0 18px 44px rgba($dark, .16), 0 3px 10px rgba($dark, .06);
+
+    &.show {
+        animation: institution-dropdown-in .24s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .dropdown-item {
+        display: flex;
+        min-height: 2.65rem;
+        align-items: center;
+        padding: .62rem .8rem;
+        color: $dark;
+        line-height: 1.25;
+        white-space: normal;
+        border-radius: .5rem;
+        transition: color .16s ease, background-color .16s ease;
+
+        &:hover,
+        &:focus {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+            outline: 0;
+        }
+
+        &.active,
+        &:active,
+        &[aria-current="true"] {
+            color: darken($primary, 8%);
+            font-weight: 600;
+            background-color: $sunken;
+        }
+    }
+
+    .dropdown-divider {
+        margin: .35rem .2rem;
+        border-color: rgba($dark, .08);
+    }
+}
+
+// El panel del autocompletado reutiliza el patrón de menú de Moodle.
+.form-autocomplete-suggestions {
+    margin-top: .2rem;
+    overflow: hidden;
+    background-color: $white;
+    border: 1px solid rgba($dark, .11);
+    border-radius: $border-radius;
+    box-shadow: 0 14px 36px rgba($dark, .15);
+
+    &:not([aria-hidden="true"]) {
+        animation: institution-dropdown-in .24s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    [role="option"] {
+        padding: .58rem .75rem;
+        border-radius: $border-radius-sm;
+
+        &[data-active-selection="true"],
+        &:hover {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+        }
+    }
+}
+
+// Selector compacto de cursos del calendario. El select original permanece
+// en el DOM para conservar los listeners de core_calendar.
+.institution-calendar-select {
+    position: relative;
+    z-index: $zindex-dropdown;
+    width: min(15rem, 100%);
+    margin: 0 map-get($spacers, 2) map-get($spacers, 2) 0;
+
+    &__native {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+    &__trigger {
+        display: flex;
+        gap: .75rem;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 2.75rem;
+        padding: .55rem .8rem;
+        color: $dark;
+        font-weight: 600;
+        text-align: left;
+        background-color: $white;
+        border: 1px solid rgba($dark, .18);
+        border-radius: $border-radius;
+        box-shadow: $shadow-sm;
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &:hover,
+        &:focus-visible,
+        &[aria-expanded="true"] {
+            border-color: $primary;
+            box-shadow: 0 0 0 .1rem rgba($primary, .12);
+        }
+    }
+
+    &__chevron {
+        color: $primary;
+        font-size: 1.1rem;
+        line-height: 1;
+        transition: transform .18s ease;
+    }
+
+    &__trigger[aria-expanded="true"] &__chevron {
+        transform: rotate(180deg);
+    }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + .2rem);
+        right: 0;
+        left: 0;
+        z-index: $zindex-dropdown + 1;
+        max-height: min(22rem, calc(100vh - 5rem));
+        padding: .45rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: $white;
+        border: 1px solid rgba($dark, .09);
+        border-radius: .75rem;
+        box-shadow: 0 18px 44px rgba($dark, .16), 0 3px 10px rgba($dark, .06);
+        animation: institution-dropdown-in .24s cubic-bezier(.22, 1, .36, 1) both;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 2.65rem;
+        padding: .62rem .8rem;
+        color: $dark;
+        text-align: left;
+        background: transparent;
+        border: 0;
+        line-height: 1.25;
+        border-radius: .5rem;
+        transition: color .16s ease, background-color .16s ease;
+
+        &:hover,
+        &:focus-visible {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+            outline: 0;
+        }
+
+        &.is-selected {
+            color: darken($primary, 8%);
+            font-weight: 700;
+            background-color: $sunken;
+
+            &::before {
+                margin-right: .5rem;
+                content: "\2713";
+            }
+        }
+    }
+
+    &__group {
+        padding: .55rem .75rem .3rem;
+        color: $secondary;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .025em;
+    }
+}
+

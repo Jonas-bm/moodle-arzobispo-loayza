@@ -1,0 +1,575 @@
+// Formularios de Moodle (`.mform`): editar perfil, ajustes de curso y de
+// actividad, etc.
+//
+// Objetivos: respetar el diseño del tema (lienzo gris fuera, superficie
+// blanca, campos blancos), uniformar el ancho de los campos y aprovechar el
+// espacio libre a la derecha colocando en DOS COLUMNAS los campos que caben
+// (texto, selección, casillas) y dejando a UNA COLUMNA a todo el ancho los
+// que no (editor, área de texto, gestor de archivos, grupos, botones).
+// Solo estilo: no cambia campos, validación ni comportamiento.
+
+// === Páginas de formulario: lienzo fuera, superficie blanca dentro =========
+// Editar perfil, archivos privados, ajustes de actividad (mod_*), edición de
+// curso/sección y páginas de configuración de la administración.
+body#page-user-edit,
+body#page-user-editadvanced,
+body#page-user-files,
+body#page-course-edit,
+body#page-course-editsection,
+body[id^="page-mod-"][id$="-mod"] {
+    // Lienzo gris SOLO fuera de la superficie central.
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    // La superficie central es blanca…
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08) !important;
+        border-radius: $border-radius-lg !important;
+        box-shadow: $shadow-sm !important;
+    }
+
+    // …y todo lo que va dentro es transparente para que se vea ese blanco.
+    #page-content,
+    #region-main-box,
+    #region-main,
+    #region-main > .box,
+    .userprofile,
+    form.mform,
+    fieldset {
+        background-color: transparent !important;
+    }
+}
+
+
+.mform {
+    // === Campos: fondo blanco y ancho uniforme ============================
+    .felement {
+        // Fondo blanco solo para los campos de entrada — NO para los botones
+        // (submit/cancel), o el botón primario se quedaría blanco sobre blanco.
+        input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not(.btn),
+        select,
+        textarea,
+        .form-control:not(.btn),
+        .custom-select {
+            background-color: $surface;
+        }
+
+        // En `.felement` (flex-wrap), un <input size="20"> se queda corto.
+        // Se fuerza a llenar su celda.
+        > input[type="text"],
+        > input[type="email"],
+        > input[type="url"],
+        > input[type="password"],
+        > input[type="tel"],
+        > input[type="number"],
+        > input[type="search"],
+        > input:not([type]),
+        > select,
+        > .form-control,
+        > .custom-select {
+            flex: 1 1 auto;
+            width: 100%;
+            max-width: none;
+        }
+
+        > textarea {
+            width: 100%;
+        }
+    }
+
+    // === Casillas, opciones y grupos en línea =============================
+    // Aire entre la casilla/opción y su etiqueta, y separación entre las
+    // piezas de un grupo (fecha/hora: "Habilitar" + día + mes + año + …).
+    input[type="checkbox"],
+    input[type="radio"],
+    .form-check-input {
+        flex: 0 0 auto;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: .55rem;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        min-height: 0;
+        margin-bottom: .35rem;
+        padding-left: 0;
+    }
+
+    .form-check-label {
+        margin: 0;
+    }
+
+    // Grupos de campos en línea: contenedor flex con separación uniforme.
+    .fgroup > fieldset > .d-flex,
+    .fgroup > div > .d-flex,
+    .felement > fieldset > .d-flex.flex-wrap,
+    .felement > div > .d-flex.flex-wrap,
+    [data-fieldtype="date_selector"] .d-flex.flex-wrap,
+    [data-fieldtype="date_time_selector"] .d-flex.flex-wrap,
+    [data-fieldtype="duration"] .d-flex.flex-wrap {
+        gap: .4rem .55rem;
+    }
+
+    // Etiqueta suelta ("Habilitar", "día(s)", separadores) dentro de un grupo.
+    .fgroup label:not(.visually-hidden),
+    .felement fieldset label:not(.visually-hidden) {
+        margin: 0 .3rem 0 0;
+    }
+
+    // El editor TinyMCE y el gestor de archivos, con el borde del tema.
+    .tox-tinymce,
+    .felement .filemanager,
+    .felement .form-filemanager {
+        border: 1px solid rgba($dark, .18) !important;
+        border-radius: $border-radius !important;
+        overflow: hidden;
+    }
+
+    // === Cabeceras de sección plegables ==================================
+    fieldset {
+        margin-bottom: 1.75rem;
+        padding: 0;
+        border: 0;
+
+        h3 {
+            color: $dark;
+            font-family: $font-family-sans-serif;
+            font-size: 1.14rem;
+            font-weight: 700;
+            letter-spacing: -.012em;
+        }
+
+        // El chevron va en un `.btn-icon` que dibuja un recuadro gris.
+        a.fheader.btn-icon {
+            color: $ink-muted;
+            background-color: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                background-color: $sunken !important;
+            }
+        }
+    }
+
+    .collapsible-actions a,
+    .collapsemenu a {
+        font-weight: 600;
+    }
+
+    // === Rejilla de dos columnas ==========================================
+    // Cada sección coloca sus filas en dos columnas. La etiqueta pasa arriba
+    // del campo (no a la izquierda) para que quepan dos por fila.
+    //
+    // IMPORTANTE: solo se aplica la rejilla cuando la sección está visible
+    // (`.fcontainer` sin `.collapse`, o `.collapse.show`). Si se aplicara
+    // también a `.collapse` sin `.show`, ganaría a la regla de Bootstrap que
+    // la oculta y las secciones plegables ("Nombres adicionales", "Opcional"…)
+    // no se podrían contraer.
+    fieldset > .fcontainer:not(.collapse),
+    fieldset > .fcontainer.collapse.show {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.1rem 1.75rem;
+        padding-top: .9rem;
+        border-top: 1px solid $hairline;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    // Durante la animación de plegado/desplegado, layout en bloque.
+    fieldset > .fcontainer.collapsing {
+        display: block;
+    }
+
+    fieldset > .fcontainer .fitem.row {
+        display: flex;
+        flex-direction: column;
+        gap: .35rem;
+        margin: 0;
+        padding: 0;
+
+        > .col-form-label,
+        > .felement {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 100%;
+            padding: 0 !important;
+        }
+
+        // Etiqueta arriba del campo, en línea con su marcador (obligatorio /
+        // ayuda). Se anula la sangría izquierda de 2,5rem que pone Boost.
+        > .col-form-label {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            color: $dark;
+            font-weight: 600;
+        }
+
+        .form-label-addon {
+            margin-left: 0 !important;
+        }
+    }
+
+    // --- Filas que ocupan las dos columnas (todo el ancho) ----------------
+    .fitem:has(> .felement[data-fieldtype="editor"]),
+    .fitem:has(> .felement[data-fieldtype="textarea"]),
+    .fitem:has(> .felement[data-fieldtype="filemanager"]),
+    .fitem:has(> .felement[data-fieldtype="filepicker"]),
+    .fitem:has(> .felement[data-fieldtype="tags"]),
+    .fitem:has(> .felement[data-fieldtype="autocomplete"]),
+    .fitem:has(> .felement[data-fieldtype="recaptcha"]),
+    .fitem:has(> .felement[data-fieldtype="group"]),
+    .fitem:has(textarea),
+    .fitem.fitem_femultiselect,
+    .fitem#fitem_id_submitbutton,
+    #fgroup_id_buttonar,
+    [data-groupname="buttonar"] {
+        grid-column: 1 / -1;
+    }
+
+    // === Barra de botones ================================================
+    #fgroup_id_buttonar,
+    [data-groupname="buttonar"] {
+        margin-top: 1rem;
+        padding-top: 1.35rem;
+        border-top: 1px solid $hairline;
+
+        .felement {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: .6rem;
+        }
+
+        // Botones bien visibles: el primario relleno, el secundario con borde.
+        // (Antes el submit heredaba fondo blanco y quedaba invisible.)
+        .btn,
+        input[type="submit"] {
+            width: auto;
+            min-width: 9rem;
+            padding-inline: 1.15rem;
+        }
+
+        input[type="submit"]:not(.btn-secondary),
+        .btn-primary {
+            color: $white !important;
+            background-color: $interactive !important;
+            border-color: $interactive !important;
+        }
+
+        .btn-secondary,
+        input[name="cancel"] {
+            color: $primary !important;
+            background-color: $surface !important;
+            border: 1px solid rgba($primary, .3) !important;
+        }
+    }
+
+    // Formularios sin secciones (p. ej. Archivos privados): no hay <fieldset>,
+    // así que la fila se trata aquí — etiqueta arriba y campo a todo el ancho.
+    > .fcontainer > .fitem.row,
+    > div > .fcontainer > .fitem.row {
+        display: flex;
+        flex-direction: column;
+        gap: .35rem;
+        margin: 0;
+
+        > .col-form-label,
+        > .felement {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 !important;
+        }
+
+        > .col-form-label {
+            color: $dark;
+            font-weight: 600;
+        }
+    }
+}
+
+// === Archivos privados: etiqueta arriba, gestor a todo el ancho ============
+// El formulario de esta página no usa <fieldset>, así que las reglas de
+// rejilla no lo alcanzan. Se fuerza aquí: cada fila en columna (etiqueta
+// encima) y el gestor de archivos ocupando el 100 %.
+body#page-user-files {
+    .mform .fitem {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: .45rem;
+        margin: 0 0 1.1rem !important;
+        padding: 0;
+    }
+
+    .mform .fitem > .col-form-label,
+    .mform .fitem > [class*="col-md-"],
+    .mform .fitem > .felement {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .mform .fitem > .col-form-label {
+        color: $dark;
+        font-weight: 600;
+    }
+
+    .mform .filemanager,
+    .mform .filemanager-container,
+    .mform .felement[data-fieldtype="filemanager"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    // La barra de botones también a todo el ancho, alineada a la izquierda.
+    .mform #fgroup_id_buttonar,
+    .mform [data-groupname="buttonar"] {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+// === Gestor de archivos (filemanager) =====================================
+// Aparece en "Archivos privados" y en "Imagen nueva" del perfil. Boost lo
+// dibuja con cajas grises anidadas y el texto del límite pegado al borde
+// derecho. Se unifica en una sola tarjeta blanca con el lenguaje del tema.
+.mform .felement {
+    .filemanager,
+    .filemanager-container,
+    .filepicker-filelist {
+        border: 0;
+        border-radius: 0;
+    }
+
+    // Contenedor exterior: una sola tarjeta.
+    .filemanager {
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid rgba($dark, .18);
+        border-radius: $border-radius;
+    }
+
+    // Texto del límite de tamaño: alineado a la izquierda, pequeño y apagado,
+    // sin desbordar el borde.
+    .filemanager .fp-restrictions {
+        padding: .55rem .8rem 0;
+        color: $ink-muted;
+        font-size: .8rem;
+        text-align: left;
+        white-space: normal;
+    }
+
+    // Barra de herramientas (añadir, crear carpeta, vistas, ruta).
+    .filemanager .fp-navbar {
+        padding: .5rem .6rem;
+        background-color: transparent;
+        border: 0;
+        border-bottom: 1px solid $hairline;
+    }
+
+    .filemanager .filemanager-toolbar .btn,
+    .filemanager .fp-viewbar .btn {
+        border-radius: $border-radius-sm;
+    }
+
+    // Zona de contenido / soltar archivos.
+    .filemanager .filemanager-container {
+        min-height: 8.5rem;
+        background-color: $surface;
+    }
+
+    .filemanager .fm-empty-container,
+    .filemanager-container .dndupload-target {
+        margin: .6rem;
+        padding: 1.4rem 1rem;
+        background-color: $canvas;
+        border: 2px dashed $hairline;
+        border-radius: $border-radius;
+        color: $ink-muted;
+    }
+
+    .filemanager-container.dndupload-over .dndupload-target {
+        background-color: rgba($interactive, .06);
+        border-color: rgba($interactive, .4);
+    }
+
+    // Icono de la flecha de descarga/soltar, más discreto.
+    .filemanager .fp-img-download,
+    .dndupload-arrow {
+        opacity: .5;
+    }
+}
+
+// "Tipos de archivo aceptados" y demás textos de ayuda del campo.
+.mform .felement .filemanager-container + .mform-filetypes-descriptions,
+.mform .felement .fp-formsetlist {
+    margin-top: .5rem;
+    color: $ink-muted;
+    font-size: .85rem;
+}
+
+// === Formularios compactos dentro de menús desplegables ====================
+// El desplegable de "Filtros" de los informes lleva un `.mform` con su propia
+// maquetación (lista con scroll + pie fijo con los botones). Las
+// personalizaciones del tema (rejilla de dos columnas, botones grandes,
+// etiqueta arriba…) lo rompían: los botones se salían del panel. Aquí se
+// anulan por completo dentro de ese contexto.
+.filters-dropdown {
+    // Panel más ancho para que los filtros y el pie respiren.
+    width: 33rem !important;
+    max-width: calc(100vw - 2rem) !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    // Sin la animación de recorte del tema: aquí taparía el pie con los botones.
+    animation: none !important;
+
+    @include media-breakpoint-down(md) {
+        width: calc(100vw - 2rem) !important;
+    }
+
+    // Aire a los lados para que casillas y selects no toquen el borde.
+    .reportbuilder-filters-sidebar > .px-3 {
+        padding-right: 1.15rem !important;
+        padding-left: 1.15rem !important;
+    }
+
+    // Cada filtro, con un poco de separación vertical entre grupos.
+    .reportbuilder-filters-sidebar .filter {
+        padding-top: .85rem;
+        padding-bottom: .85rem;
+    }
+
+    .mform,
+    .mform fieldset,
+    .mform fieldset > .fcontainer,
+    .mform > .fcontainer,
+    .mform > div > .fcontainer {
+        display: block !important;
+        grid-template-columns: none !important;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    // Ojo: se excluye el pie de botones, que necesita seguir siendo flex
+    // para poder centrarse (ver más abajo).
+    .mform .fitem:not([data-groupname="buttonar"]),
+    .mform .fitem.row:not([data-groupname="buttonar"]) {
+        display: block !important;
+        margin: 0 0 .75rem !important;
+        padding: 0 !important;
+        border: 0 !important;
+    }
+
+    .mform .fitem > .col-form-label,
+    .mform .fitem > .felement,
+    .mform .fitem > [class*="col-md-"] {
+        width: auto;
+        max-width: none;
+        padding: 0 !important;
+        flex: 0 1 auto;
+    }
+
+    .mform .felement > select,
+    .mform .felement > input,
+    .mform .felement > .form-control {
+        width: 100%;
+        max-width: none;
+    }
+
+    // El pie con "Aplicar" / "Resetear todo".
+    //
+    // El formulario usa `set_display_vertical()` → `.mform.full-width-labels`,
+    // que pone `.col-md-9` a `flex: 0 0 100%`. Como Boost además posiciona el
+    // `.fitem` en `position: absolute` SIN anchura, ese `100%` es de un ancho
+    // nulo y todo el pie se encoge al contenido (los botones a la izquierda).
+    //
+    // Solución: se conserva el posicionamiento absoluto de Boost (anclado a
+    // `.filters-dropdown`, que es el `.dropdown-menu`), pero con `left: 0;
+    // right: 0` → el pie ocupa TODO el ancho del panel. Dentro, todo se aplana
+    // con `display: contents` y los dos botones se centran con flexbox. Se
+    // mantiene el `padding-bottom` del panel que reserva el hueco.
+
+    .reportbuilder-filters-sidebar {
+        max-height: 26rem;
+    }
+
+    .fitem[data-groupname="buttonar"] {
+        position: absolute !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        z-index: 5;
+        display: flex !important;
+        flex-flow: row nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: .75rem !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 3.5rem !important;
+        margin: 0 !important;
+        padding: .65rem 1rem !important;
+        border: 0 !important;
+        border-top: 1px solid $hairline !important;
+        background-color: $surface !important;
+        box-shadow: 0 -8px 14px rgba($dark, .05);
+
+        // Aplana TODO lo que hay dentro para que los dos botones sean hijos
+        // flex directos del `.fitem`.
+        > *,
+        .felement,
+        fieldset,
+        fieldset > div,
+        .fgroup,
+        .fgroup > div {
+            display: contents !important;
+        }
+
+        // …salvo lo que no debe verse (etiqueta del grupo, leyenda, feedback).
+        > .col-form-label,
+        > [class*="col-md-3"],
+        p[id$="_label"],
+        legend,
+        .form-control-feedback,
+        .form-label-addon {
+            display: none !important;
+        }
+
+        // Centrado GARANTIZADO: dos espaciadores flex a cada lado empujan los
+        // botones al medio, funcione o no `justify-content`.
+        &::before,
+        &::after {
+            flex: 1 1 0 !important;
+            content: "" !important;
+        }
+
+        .btn,
+        input[type="submit"],
+        input[type="reset"],
+        button {
+            flex: 0 0 8.5rem !important;
+            min-width: 8.5rem !important;
+            max-width: 8.5rem !important;
+            width: 8.5rem !important;
+            margin: 0 !important;
+            padding-inline: .5rem !important;
+            text-align: center;
+        }
+    }
+}

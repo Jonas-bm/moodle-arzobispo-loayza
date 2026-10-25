@@ -1,0 +1,202 @@
+//
+// Calificaciones: SOLO el informe del alumno (informe del usuario) y el
+// informe único reciben el diseño del tema. El "Informe del calificador"
+// (libro de notas del profesor) NO se toca: tiene una maqueta propia con
+// columnas fijas gestionadas por JS y cualquier retoque del tema la
+// rompe — se deja tal cual la renderiza Moodle.
+//
+body.path-grade-report-user,
+body.path-grade-report-single {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08);
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main,
+    .user-report-container,
+    .gradereport-user,
+    .box,
+    .generalbox {
+        background-color: transparent !important;
+    }
+
+    // Encabezado del alumno (avatar + nombre).
+    .page-context-header,
+    [data-region="user-heading"],
+    .user-heading {
+        margin-bottom: 1rem;
+
+        h2,
+        h3,
+        .h2 {
+            color: $dark;
+            font-weight: 700;
+        }
+    }
+
+    // Barra de acción "Usuario ▾" y selectores.
+    .grade-navigation,
+    [data-region="grade-navigation"],
+    .action-bar {
+        margin-bottom: 1.25rem;
+
+        .dropdown-toggle,
+        .btn {
+            font-weight: 600;
+        }
+    }
+
+    .user-grade,
+    table.user-grade {
+        width: 100%;
+        margin: 0;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+
+        th,
+        td {
+            padding: .85rem 1rem;
+            border: 0;
+            border-bottom: 1px solid $hairline;
+            vertical-align: middle;
+        }
+
+        thead th {
+            color: $ink-muted;
+            font-family: $font-family-sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            background-color: $sunken;
+        }
+
+        // Fila de categoría: ancla visual de cada bloque de notas.
+        tr.category th,
+        tr.category td,
+        tr.categoryitem th,
+        tr.categoryitem td,
+        tr[class*="category"] > th,
+        tr[class*="category"] > td {
+            font-weight: 700;
+            background-color: $sunken;
+        }
+
+        // Ítem de calificación.
+        tr.item th.rowtitle,
+        tr.item th[scope="row"] {
+            font-weight: 500;
+        }
+
+        // Total del curso / de categoría.
+        tr.baggt td,
+        tr.baggt th,
+        tr:last-child td {
+            font-weight: 700;
+            background-color: $sunken;
+        }
+
+        // Columna de nota: destacada.
+        td.column-grade,
+        td.column-finalgrade {
+            font-weight: 700;
+            color: $dark;
+            white-space: nowrap;
+        }
+
+        // Barra de porcentaje si Moodle la muestra.
+        .column-percentage {
+            color: $ink-muted;
+        }
+
+        a {
+            color: $link-color;
+            font-weight: 600;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                text-decoration: underline;
+            }
+        }
+
+        // Sangría de las categorías anidadas, conservada.
+        .cell.column-name {
+            .gradeitemheader {
+                display: inline-flex;
+                align-items: center;
+                gap: .4rem;
+            }
+        }
+    }
+
+    // Feedback del profesor: se separa como nota al pie de la fila.
+    .feedback,
+    td.column-feedback {
+        color: $ink-muted;
+        font-style: italic;
+    }
+
+    // Selector de usuario / curso arriba del informe.
+    .gradetreebox + form,
+    .user-report-container select,
+    #user-grades-header {
+        margin-bottom: 1.25rem;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    body.path-grade-report-user,
+    body.path-grade-report-single {
+        #page.drawers .main-inner {
+            padding: .85rem;
+            border-radius: $border-radius;
+        }
+
+        .user-grade {
+            th,
+            td {
+                padding: .65rem .6rem;
+                font-size: .85rem;
+            }
+        }
+    }
+}
+
+// Responsive: la tabla de notas nunca desborda; se desplaza dentro de su caja.
+@include media-breakpoint-down(md) {
+    body.path-grade-report-user,
+    body.path-grade-report-single {
+        .user-report-container,
+        #region-main .no-overflow,
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .user-grade {
+            min-width: 34rem;
+        }
+    }
+}
+
+// Contener el ancho del libro de notas sin alterar sus columnas ni sus datos.
+body.path-grade-report-grader .gradeparent {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+}

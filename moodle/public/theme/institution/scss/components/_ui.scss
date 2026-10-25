@@ -1,0 +1,177 @@
+//
+// Institution — sistema de componentes "Aula"
+//
+// Piezas transversales (botones, etiquetas, progreso, avisos, cabeceras de
+// bloque). Se apoyan en los tokens de pre.scss para que el alumno perciba un
+// único lenguaje visual en Área personal, cursos, actividades y notas.
+//
+
+// === Botones ===============================================================
+.btn {
+    font-weight: 600;
+    border-radius: $border-radius;
+    transition: background-color .15s ease, border-color .15s ease,
+        color .15s ease, box-shadow .15s ease;
+}
+
+.btn-primary {
+    background-color: $interactive;
+    border-color: $interactive;
+
+    &:hover,
+    &:focus-visible {
+        background-color: darken($interactive, 8%);
+        border-color: darken($interactive, 8%);
+    }
+
+    &:active {
+        background-color: darken($interactive, 14%) !important;
+        border-color: darken($interactive, 14%) !important;
+    }
+}
+
+.btn-secondary {
+    color: $primary;
+    background-color: $surface;
+    border-color: rgba($primary, .28);
+
+    &:hover,
+    &:focus-visible {
+        color: darken($primary, 6%);
+        background-color: $sunken;
+        border-color: rgba($primary, .45);
+    }
+}
+
+// CTA secundaria de acento (entregar, intentar…), cuando Moodle usa .btn-warning.
+.btn-warning {
+    color: $white;
+    background-color: $accent;
+    border-color: $accent;
+
+    &:hover,
+    &:focus-visible {
+        color: $white;
+        background-color: darken($accent, 7%);
+        border-color: darken($accent, 7%);
+    }
+}
+
+// === Etiquetas de estado ==================================================
+.badge {
+    padding: .38em .65em;
+    font-weight: 600;
+    letter-spacing: .01em;
+    border-radius: 999px;
+}
+
+.badge.bg-warning,
+.badge.badge-warning {
+    color: $white !important;
+    background-color: $accent !important;
+}
+
+// === Barras de progreso ===================================================
+.progress {
+    height: .5rem;
+    background-color: $sunken;
+    border-radius: 999px;
+
+    .progress-bar {
+        background-color: $accent;
+        border-radius: 999px;
+    }
+}
+
+// Anillo/So porcentaje de finalización de curso en las tarjetas.
+.progress-bar.bg-success,
+.bar.bg-success {
+    background-color: $success;
+}
+
+// === Avisos ===============================================================
+.alert {
+    border: 1px solid transparent;
+    border-radius: $border-radius;
+}
+
+// Avisos informativos y estados vacíos ("No hay…", "Nada que mostrar"):
+// superficie blanca con un filete azul a la izquierda, en lugar del bloque
+// azul, para que encajen con el resto de superficies del tema.
+.alert-info {
+    color: $dark;
+    background-color: $surface;
+    border-color: $hairline;
+    border-left: 3px solid $info;
+}
+
+.alert-success {
+    color: darken($success, 12%);
+    background-color: rgba($success, .1);
+    border-color: rgba($success, .24);
+}
+
+.alert-warning {
+    color: darken($accent, 10%);
+    background-color: rgba($accent, .1);
+    border-color: rgba($accent, .28);
+}
+
+.alert-danger {
+    color: darken($danger, 8%);
+    background-color: rgba($danger, .08);
+    border-color: rgba($danger, .24);
+}
+
+// === Cabecera de bloque (Área personal) ==================================
+// Título en serif con una fina regla de acento a la izquierda.
+.block .card-title,
+.block > .card-body > h5:first-child {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: .7rem;
+    font-size: 1.1rem;
+
+    &::before {
+        position: absolute;
+        top: .1em;
+        bottom: .1em;
+        left: 0;
+        width: 3px;
+        background-color: $accent;
+        border-radius: 2px;
+        content: "";
+    }
+}
+
+// === Tablas de datos genéricas ==========================================
+.generaltable {
+    border-color: $hairline;
+
+    th {
+        color: $ink-muted;
+        font-weight: 600;
+    }
+}
+
+// === Pie de página ========================================================
+// El pie de Moodle ("Contactar con el soporte", "Usted se ha identificado
+// como…", "Resumen de retención de datos", "Cambiar al tema estándar",
+// "Desarrollado por Moodle") es ruido para el alumno. En escritorio ya va
+// colapsado tras un botón; en móvil Moodle lo muestra desplegado. Se oculta
+// en ambos casos. (No afecta al botón de sala de comunicación del curso.)
+#page-footer .footer-content-popover,
+#page-footer .footer-content,
+.footer-popover .footer-content-popover,
+.btn-footer-popover {
+    display: none !important;
+}
+
+// Si al ocultar su contenido el <footer> queda como una franja vacía, se
+// retira por completo (salvo que contenga el botón de comunicación).
+#page-footer:not(:has(.btn-footer-communication)) {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent !important;
+}

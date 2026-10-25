@@ -1,0 +1,119 @@
+//
+// Institution — sistema tipográfico "Aula"
+//
+// Una sola familia, Hanken Grotesk, para interfaz, cuerpo y titulares. La
+// jerarquía se marca con peso (700 en titulares) y tracking ajustado, no con
+// un contraste serif/sans.
+//
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: $font-family-sans-serif;
+    color: $dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+// Reboot ya aplica $headings-font-family a h1–h6. Se extiende a los titulares
+// que Moodle renderiza como clase o dentro de componentes concretos.
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.page-header-headings h1,
+.page-context-header h1,
+.block .card-title,
+.block h5,
+.coursename,
+.activityname,
+.modal-title {
+    font-family: $font-family-sans-serif;
+    font-weight: $headings-font-weight;
+    color: $headings-color;
+    letter-spacing: -.014em;
+}
+
+// Escala fluida para los dos niveles superiores; el resto hereda la de Boost.
+h1, .h1 {
+    font-size: clamp(1.6rem, 3.4vw, 2.15rem);
+    line-height: 1.2;
+    letter-spacing: -.018em;
+}
+
+h2, .h2 {
+    font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+    line-height: 1.25;
+    letter-spacing: -.012em;
+}
+
+// Texto de apoyo homogéneo.
+.text-muted,
+small,
+.small {
+    color: $ink-muted;
+}
+
+// Enlaces dentro del contenido principal: azul interactivo con subrayado solo
+// al pasar. Los enlaces que actúan como superficie (botones, nav, tarjetas)
+// quedan fuera por sus propias clases.
+#region-main a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link):not(.list-group-item),
+.block_html a,
+.summary a,
+.no-overflow a {
+    color: $link-color;
+    text-decoration: none;
+    text-underline-offset: .15em;
+
+    &:hover,
+    &:focus-visible {
+        color: $link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+// Foco visible coherente.
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+summary:focus-visible {
+    outline: $focus-ring-width solid $focus-ring-color;
+    outline-offset: 2px;
+}
+
+// Clic con ratón: nunca un contorno ni una sombra de foco. Boost/Bootstrap
+// dejan un box-shadow (y a veces un outline) en :focus que, al hacer clic en
+// un enlace o botón, parpadea como un "marco cuadrado" antes de navegar. El
+// anillo de arriba queda reservado a la navegación por teclado
+// (:focus-visible), que sí se conserva por accesibilidad.
+// Se incluye también la clase `.focus` que Moodle añade por JS (dispara el
+// mismo box-shadow aunque el foco venga de un clic) y el disparador de un
+// menú abierto (`[aria-expanded="true"]`), que lo conserva mientras el menú
+// está desplegado.
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+.btn:focus:not(:focus-visible),
+.nav-link:focus:not(:focus-visible),
+.dropdown-toggle:focus:not(:focus-visible),
+.dropdown-item:focus:not(:focus-visible),
+.page-link:focus:not(:focus-visible),
+.list-group-item:focus:not(:focus-visible),
+summary:focus:not(:focus-visible),
+a.dropdown-toggle.focus,
+.btn.focus,
+.nav-link.focus,
+.dropdown-toggle[aria-expanded="true"]:not(:focus-visible),
+.btn[aria-expanded="true"]:not(:focus-visible) {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+::selection {
+    background-color: rgba($interactive, .18);
+}
+
+hr {
+    border-top-color: $hairline;
+    opacity: 1;
+}

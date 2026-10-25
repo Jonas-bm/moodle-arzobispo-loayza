@@ -1,0 +1,59 @@
+// En la portada y el Área personal no existen acciones imprescindibles en la
+// cabecera. Se retira también su contenedor para que no quede una franja vacía.
+body#page-site-index,
+body.pagelayout-mydashboard {
+    #page-header {
+        display: none !important;
+    }
+}
+
+// === Columna de contenido centrada ==========================================
+// En TODAS las vistas el contenido se presenta como una columna de ancho
+// contenido y centrada sobre el lienzo, nunca de extremo a extremo. Se respeta
+// por completo la estructura y los drawers de Moodle: solo se limita y centra
+// el contenedor .main-inner (y, para que quede alineada, la barra superior).
+$institution-content-maxwidth: 76rem;
+
+#page.drawers .main-inner,
+body.limitedwidth #page.drawers .main-inner,
+body.pagelayout-standard #page.drawers .main-inner {
+    width: 100%;
+    max-width: $institution-content-maxwidth;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid rgba($dark, .06);
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+}
+
+// La cabecera de página que Boost limita aparte se alinea con la columna.
+.header-maxwidth {
+    max-width: $institution-content-maxwidth;
+}
+
+// Gutter lateral: la columna nunca toca el borde en pantallas intermedias.
+#page.drawers {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+@include media-breakpoint-up(xl) {
+    #page.drawers {
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+    }
+}
+
+// La barra superior alinea su contenido con la misma columna.
+@include media-breakpoint-up(md) {
+    .navbar.fixed-top > .container-fluid {
+        max-width: $institution-content-maxwidth;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+// Espacio interior compartido de las páginas, excluyendo portada y acceso.
+body:not(.has-institution-hero):not(.pagelayout-login) #page.drawers .main-inner {
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+}

@@ -1,0 +1,136 @@
+// Cabecera de página: este es el cambio visual principal del tema. El
+// degradado permite comprobar de inmediato que Institution está activo.
+#page-header {
+    position: relative;
+    margin-bottom: map-get($spacers, 4);
+    padding: map-get($spacers, 4);
+    overflow: hidden;
+    color: $white;
+    background:
+        radial-gradient(circle at 88% 20%, rgba($white, .18), transparent 24%),
+        linear-gradient(125deg, darken($primary, 8%) 0%, $primary 52%, #2878a5 100%);
+    border: 0;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
+
+    // Mantiene textos y acciones por encima del detalle decorativo.
+    > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    h1,
+    h2,
+    .page-header-headings,
+    .text-muted {
+        color: inherit !important;
+    }
+
+    h1 {
+        margin-bottom: 0;
+        font-size: clamp(1.65rem, 3vw, 2.35rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+    }
+
+    .breadcrumb {
+        margin-bottom: map-get($spacers, 2);
+
+        a,
+        .breadcrumb-item,
+        .breadcrumb-item::before {
+            color: rgba($white, .88);
+        }
+    }
+
+    .btn-secondary {
+        color: $dark;
+        background-color: rgba($white, .94);
+        border-color: transparent;
+
+        &:hover,
+        &:focus-visible {
+            background-color: $white;
+        }
+    }
+}
+
+// Cabecera compacta global: se elimina el banner decorativo y el nombre
+// grande del módulo. Las acciones reales que Moodle inserta en la cabecera
+// (buscadores, botones de edición, etc.) permanecen disponibles.
+#page-header {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    color: $dark;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+
+    .page-header-headings,
+    .page-context-header,
+    h1 {
+        display: none !important;
+    }
+
+    .header-actions-container:not(:empty) {
+        width: 100%;
+        margin: 0 0 1rem;
+        padding: .75rem;
+        background-color: $white;
+        border: 1px solid rgba($dark, .06);
+        border-radius: .75rem;
+        box-shadow: 0 4px 14px rgba($dark, .045);
+    }
+}
+
+// Si Moodle no inyecta acciones, el tema ya oculta todos los textos de la
+// cabecera y el contenedor queda como una franja vacía. Se retira por completo.
+#page-header:not(:has(.header-actions-container > *)) {
+    display: none !important;
+}
+
+
+// Rutas de navegación compartidas: enlaces legibles y cheurones discretos.
+#page-header .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem 0;
+    align-items: center;
+    line-height: 1.6;
+
+    .breadcrumb-item {
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+        padding-left: 0;
+        font-size: .85rem;
+        overflow-wrap: anywhere;
+
+        + .breadcrumb-item::before {
+            display: inline-block;
+            float: none;
+            width: .35rem;
+            height: .35rem;
+            flex-shrink: 0;
+            margin: 0 .85rem;
+            padding: 0;
+            border-top: 1px solid currentColor;
+            border-right: 1px solid currentColor;
+            opacity: .6;
+            transform: rotate(45deg);
+            content: "";
+        }
+
+        a {
+            border-radius: .2rem;
+
+            &:focus-visible {
+                outline: 2px solid $primary;
+                outline-offset: 3px;
+            }
+        }
+    }
+}

@@ -1,0 +1,344 @@
+// Índice de informes del curso: una única superficie blanca y enlaces
+// conservados como destinos reales, presentados en una cuadrícula adaptable.
+body.path-report {
+    &,
+    #page-wrapper,
+    #page.drawers,
+    #page.drawers .main-inner,
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: $white !important;
+    }
+
+    #page.drawers .main-inner {
+        border-color: rgba($dark, .07);
+        box-shadow: 0 8px 24px rgba($dark, .055);
+    }
+
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item {
+        background-color: $white !important;
+    }
+
+    #region-main .container-fluid:has(ul.list-unstyled) {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+
+        > div {
+            width: 100%;
+        }
+
+        ul.list-unstyled {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+            gap: .85rem;
+            width: 100%;
+            margin: 1rem 0 0 !important;
+
+            li {
+                display: flex;
+                min-width: 0;
+            }
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                width: 100%;
+                min-height: 4rem;
+                padding: .9rem 1rem;
+                color: darken($primary, 5%);
+                font-weight: 650;
+                line-height: 1.3;
+                text-decoration: none;
+                background-color: $white;
+                border: 1px solid rgba($primary, .15);
+                border-radius: .7rem;
+                box-shadow: 0 4px 12px rgba($dark, .045);
+                transition: color .16s ease, background-color .16s ease,
+                    border-color .16s ease, box-shadow .16s ease,
+                    transform .16s ease;
+
+                &::after {
+                    flex: 0 0 auto;
+                    color: $primary;
+                    font-size: 1.15rem;
+                    content: "\2192";
+                    transition: transform .16s ease;
+                }
+
+                &:hover,
+                &:focus-visible {
+                    color: darken($primary, 10%);
+                    background-color: $sunken;
+                    border-color: rgba($primary, .3);
+                    box-shadow: 0 8px 20px rgba($dark, .08);
+                    outline: 0;
+                    transform: translateY(-2px);
+
+                    &::after {
+                        transform: translateX(.2rem);
+                    }
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        #region-main .container-fluid:has(ul.list-unstyled) ul.list-unstyled {
+            grid-template-columns: minmax(0, 1fr);
+            gap: .65rem;
+
+            a {
+                min-height: 3.5rem;
+            }
+        }
+    }
+}
+
+// === Informes personalizados (report builder) =============================
+// Misma lengua visual: lienzo fuera, superficie blanca, controles del tema.
+body#page-reportbuilder-index,
+body.path-reportbuilder,
+body.path-admin-reportbuilder {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08) !important;
+        border-radius: $border-radius-lg !important;
+        box-shadow: $shadow-sm !important;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main,
+    .reportbuilder-report,
+    .reportbuilder-wrapper,
+    .reportbuilder-report-container {
+        background-color: transparent !important;
+    }
+
+    // Botón "Filtros": el secundario del tema (blanco + borde azul).
+    .reportbuilder-wrapper .dropdown > .btn,
+    [data-region="report-filters"] .btn,
+    button[data-toggle="dropdown"].btn {
+        color: $primary;
+        font-weight: 600;
+        background-color: $surface;
+        border: 1px solid rgba($primary, .3);
+        border-radius: $border-radius-sm;
+
+        &:hover,
+        &:focus-visible,
+        &[aria-expanded="true"] {
+            color: darken($primary, 6%);
+            background-color: $sunken;
+            border-color: rgba($primary, .5);
+        }
+    }
+
+    // Estado vacío "Nada que mostrar": caja blanca con borde fino, no el azul
+    // de .alert-info.
+    .reportbuilder-report .alert-info,
+    #region-main .alert-info,
+    .reportbuilder-wrapper .alert-info,
+    .reportbuilder-wrapper ~ .alert-info,
+    .alert.alert-info {
+        color: $ink-muted;
+        background-color: $surface !important;
+        border: 1px solid $hairline !important;
+        border-radius: $border-radius;
+    }
+
+    // Cabecera de la tabla del informe, coherente con las demás tablas.
+    .reportbuilder-table th {
+        color: $ink-muted;
+        font-weight: 700;
+        background-color: $sunken;
+    }
+}
+
+// Competencias del curso: título, barra de filtros y contenido en ese orden.
+// Los controles y sus atributos siguen siendo los originales de Moodle.
+body#page-admin-tool-lp-coursecompetencies,
+body#page-report-competency-index {
+    #region-main > div:has(> .float-end > .user-competency-course-navigation) {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+
+        > h2 {
+            order: -1;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .float-end:has(> .user-competency-course-navigation) {
+        float: none !important;
+        width: 100%;
+        margin-bottom: 1rem !important;
+        padding: 1rem !important;
+        background-color: $canvas;
+        border-color: $hairline !important;
+        border-radius: $border-radius;
+    }
+
+    .user-competency-course-navigation > span {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        align-items: center;
+
+        // El select original permanece en el DOM para la lógica de Moodle.
+        // Una regla global de formularios lo hacía ocupar espacio aun oculto.
+        > select[aria-hidden="true"] {
+            display: none !important;
+        }
+
+        .form-autocomplete-selection {
+            flex: 0 1 auto;
+            width: auto !important;
+            max-width: 100%;
+            min-height: 0;
+            margin: 0;
+
+            .badge {
+                padding: .5rem .75rem;
+                color: $primary !important;
+                font-weight: 600;
+                line-height: 1.4;
+                white-space: normal;
+                background-color: $surface !important;
+                border: 1px solid rgba($primary, .25);
+                border-radius: $border-radius-sm;
+                box-shadow: none;
+
+                &:hover {
+                    background-color: $sunken !important;
+                }
+            }
+        }
+
+        .form-autocomplete-input {
+            flex: 1 1 24rem;
+            min-width: 0;
+            margin: 0 !important;
+
+            input {
+                width: 100%;
+                min-width: 0 !important;
+            }
+        }
+
+        .form-autocomplete-suggestions {
+            right: 0;
+            left: 0;
+            max-width: 100%;
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+            align-items: stretch;
+
+            .form-autocomplete-input {
+                flex-basis: auto;
+            }
+        }
+    }
+
+    .managecompetencies {
+        width: 100%;
+        table-layout: fixed;
+
+        em,
+        i:not(.icon):not([class*="fa-"]) {
+            font-style: normal;
+        }
+
+        td {
+            overflow-wrap: anywhere;
+        }
+
+        ul.list-inline {
+            width: auto;
+            max-width: 100%;
+            margin-inline: 0;
+        }
+    }
+}
+
+
+// Desglose: filtros a todo el ancho y tabla debajo, sin columnas vacías.
+body#page-report-competency-index {
+    .user-competency-course-navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem 1.5rem;
+
+        > span {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: .5rem;
+        }
+
+        label {
+            margin: 0;
+            color: $dark;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .form-autocomplete-input {
+            flex: 0 0 auto !important;
+        }
+    }
+
+    .institution-competency-groups {
+        margin-bottom: 1rem;
+    }
+
+    [data-region="competency-breakdown-report"] > .row > .col-md-6 {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        .user-competency-course-navigation {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+// Filtros del desglose sobre la misma superficie blanca del informe.
+body#page-report-competency-index {
+    .float-end:has(> .user-competency-course-navigation) {
+        background-color: $white;
+    }
+
+    .user-competency-course-navigation {
+        .form-control,
+        .form-select,
+        select,
+        input {
+            background-color: $white !important;
+        }
+    }
+}

@@ -1,0 +1,1485 @@
+// =============================================================================
+// Portada pública (landing) — "Institution"
+// Todas las secciones (hero, secciones de tarjetas, banda, pasos, FAQ y footer)
+// las inyecta `javascript/frontpage_hero.js` con o sin sesión iniciada. Debajo queda intacto el contenido normal de la portada de Moodle.
+// Contenido genérico, apto para cualquier institución. Solo estilo — no cambia
+// datos, lógica ni permisos. Usa únicamente los tokens de color del tema.
+// =============================================================================
+
+// --- Estructura de la portada -----------------------------------------------
+body#page-site-index.has-institution-hero {
+
+    overflow-x: clip;
+
+    // Footer pegado al fondo aunque el contenido sea corto.
+    #page-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: clip;
+    }
+
+    #page-wrapper > #page {
+        flex: 1 0 auto;
+        min-width: 0;
+    }
+
+    .institution-footer {
+        flex: 0 0 auto;
+    }
+
+    // Aprovechar todo el ancho: ampliar el contenedor limitado de Moodle.
+    #page.drawers .main-inner {
+        max-width: 100rem;
+    }
+
+    // Continuar el blanco de la navegación secundaria hasta ambos extremos.
+    // No se recorta el contenedor: los menús desplegables mantienen su espacio.
+    #page.drawers:has(.secondary-navigation) {
+        // La navegación del curso del sitio fija antes un fondo con !important.
+        background-color: $surface !important;
+    }
+
+    // El hero arranca pegado a la barra de navegación (sin cabecera vacía).
+    #page-header {
+        display: none;
+    }
+
+    #page-content,
+    #region-main {
+        padding-bottom: 0;
+    }
+
+    #page.drawers .main-inner {
+        padding-bottom: 0;
+    }
+
+    // El contenido propio de Moodle respira más bajo las secciones inyectadas.
+    #region-main > .container-fluid,
+    #region-main > .course-content,
+    #frontpage-available-course-list,
+    #frontpage-course-list {
+        margin-top: 2.5rem;
+    }
+
+    .institution-catalog-anchor {
+        display: block;
+        height: 0;
+        scroll-margin-top: 5.5rem;
+    }
+}
+
+// Secciones a sangre completa sin depender de `100vw`.
+.institution-hero,
+.institution-section,
+.institution-band,
+.institution-footer {
+    margin-right: calc(50% - 50vw);
+    margin-left: calc(50% - 50vw);
+}
+
+// --- Botones compartidos ----------------------------------------------------
+.institution-btn {
+    display: inline-flex;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: .7rem 1.6rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: $border-radius;
+    transition: transform .14s ease, box-shadow .14s ease,
+        background-color .14s ease, color .14s ease, border-color .14s ease;
+
+    &--primary {
+        color: $white;
+        background-color: $interactive;
+        box-shadow: 0 12px 26px rgba($interactive, .28);
+
+        &:hover,
+        &:focus-visible {
+            color: $white;
+            background-color: darken($interactive, 6%);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba($interactive, .32);
+        }
+    }
+
+    &--quiet {
+        color: $primary;
+        background-color: transparent;
+        border-color: $hairline;
+
+        &:hover,
+        &:focus-visible {
+            color: darken($primary, 6%);
+            background-color: $sunken;
+            border-color: rgba($primary, .3);
+        }
+    }
+
+    &--ghost {
+        color: $white;
+        background-color: rgba($white, .14);
+        border-color: rgba($white, .8);
+
+        &:hover,
+        &:focus-visible {
+            background-color: rgba($white, .24);
+            border-color: $white;
+        }
+    }
+}
+
+// --- HERO (dos columnas, a pantalla completa) ------------------------------
+.institution-hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--navbar-height, 68px));
+    min-height: calc(100svh - var(--navbar-height, 68px));
+    margin-top: -1rem;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 5rem);
+    overflow: hidden;
+    color: $white;
+    background-color: $primary;
+    // Fondo uniforme para respetar el azul de la referencia institucional.
+    background-image: none;
+
+    // Botones sobre fondo azul.
+    .institution-btn--primary {
+        // Los enlaces de #region-main tienen un color global más específico.
+        color: $white !important;
+        background-color: $accent;
+        box-shadow: 0 14px 30px rgba(#000, .22);
+
+        &:hover,
+        &:focus-visible {
+            color: $white !important;
+            background-color: darken($accent, 7%);
+        }
+    }
+
+    .institution-btn--quiet {
+        color: $white !important;
+        background-color: rgba($white, .16);
+        border: 2px solid rgba($white, .9);
+
+        &:hover,
+        &:focus-visible {
+            color: $primary !important;
+            background-color: $white;
+            border-color: $white;
+        }
+    }
+
+    &__inner {
+        display: grid;
+        grid-template-columns: 1.05fr .95fr;
+        gap: clamp(2rem, 5vw, 4.5rem);
+        align-items: center;
+        width: 100%;
+        max-width: 82rem;
+        margin: 0 auto;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+            text-align: center;
+        }
+    }
+
+    &__title {
+        margin: 0 0 1.1rem;
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -.022em;
+        text-wrap: balance;
+        text-shadow: 0 2px 20px rgba(#000, .18);
+    }
+
+    &__lead {
+        max-width: 34rem;
+        margin: 0 0 1.9rem;
+        color: rgba($white, .9);
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        line-height: 1.6;
+
+        @include media-breakpoint-down(lg) {
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem;
+
+        @include media-breakpoint-down(lg) {
+            justify-content: center;
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+
+            .institution-btn {
+                width: 100%;
+            }
+        }
+    }
+
+    // Panel visual (sustituye a la ilustración; solo tokens del tema).
+    &__visual {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    &__panel {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 4 / 3;
+        padding: 2rem;
+        overflow: hidden;
+        color: $white;
+        background-color: rgba($white, .1);
+        background-image:
+            radial-gradient(circle at 25% 25%, rgba($white, .16), transparent 50%);
+        border: 1px solid rgba($white, .28);
+        border-radius: $border-radius-lg;
+        box-shadow: 0 30px 60px rgba(#000, .25);
+    }
+
+    &__panel-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 5.5rem;
+        height: 5.5rem;
+        font-size: 2.4rem;
+        background-color: rgba($white, .16);
+        border: 1px solid rgba($white, .35);
+        border-radius: 50%;
+    }
+
+    &__panel-badge--brand {
+        width: min(100%, 25rem);
+        height: auto;
+        padding: 1.5rem;
+        background-color: $white;
+        border: 0;
+        border-radius: $border-radius;
+        box-shadow: $shadow-md;
+    }
+
+    &__logo {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    &__panel-foot {
+        position: absolute;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        left: 1.25rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: .85rem 1rem;
+        background-color: rgba(#000, .28);
+        border: 1px solid rgba($white, .18);
+        border-radius: $border-radius;
+        backdrop-filter: blur(4px);
+    }
+
+    &__panel-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    &__panel-label {
+        color: rgba($white, .78);
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    &__panel-value {
+        font-size: .98rem;
+        font-weight: 700;
+    }
+
+    &__panel-cal {
+        flex: 0 0 auto;
+        font-size: 1.3rem;
+        color: rgba($white, .9);
+    }
+}
+
+// --- Secciones genéricas de tarjetas --------------------------------------
+.institution-section {
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 5rem);
+
+    &--white {
+        background-color: $surface;
+        background-image: radial-gradient(circle, rgba($primary, .13) .8px, transparent 1px);
+        background-size: 22px 22px;
+        background-position: 11px 11px;
+        background-repeat: repeat;
+    }
+
+    &--canvas {
+        background-color: $canvas;
+    }
+
+    &__head {
+        max-width: 46rem;
+        margin: 0 auto clamp(2.25rem, 5vw, 3.5rem);
+        text-align: center;
+
+        h2 {
+            margin: 0 0 .6rem;
+            color: $dark;
+            font-family: $font-family-sans-serif;
+            font-size: clamp(1.5rem, 3.6vw, 2.15rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -.018em;
+        }
+
+        p {
+            margin: 0;
+            color: $ink-muted;
+            font-size: clamp(.96rem, 2.2vw, 1.08rem);
+            line-height: 1.55;
+        }
+    }
+}
+
+.institution-grid {
+    display: grid;
+    gap: clamp(1.25rem, 2.4vw, 2rem);
+    width: 100%;
+    max-width: 96rem;
+    margin: 0 auto;
+
+    &--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 40rem;
+        }
+    }
+
+    &--4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 108rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: 44rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 24rem;
+        }
+    }
+}
+
+.institution-card {
+    padding: clamp(1.9rem, 3vw, 2.75rem) clamp(1.4rem, 2.2vw, 2rem);
+    background-color: $surface;
+    border: 1px solid $hairline;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+
+    &:hover {
+        border-color: rgba($primary, .2);
+        box-shadow: $shadow-md;
+        transform: translateY(-3px);
+    }
+
+    &--center {
+        text-align: center;
+    }
+
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.6rem;
+        height: 3.6rem;
+        margin-bottom: 1.15rem;
+        color: $primary;
+        font-size: 1.5rem;
+        background-color: rgba($primary, .1);
+        border-radius: 14px;
+    }
+
+    &--center &__icon {
+        border-radius: 50%;
+    }
+
+    &__title {
+        margin: 0 0 .6rem;
+        color: $dark;
+        font-family: $font-family-sans-serif;
+        font-size: 1.12rem;
+        font-weight: 700;
+        letter-spacing: -.012em;
+    }
+
+    &__text {
+        margin: 0;
+        color: $ink-muted;
+        font-size: .94rem;
+        line-height: 1.6;
+    }
+
+    &__list {
+        margin: 1.1rem 0 0;
+        padding: 1.1rem 0 0;
+        list-style: none;
+        border-top: 1px solid $hairline;
+
+        li {
+            position: relative;
+            margin-top: .55rem;
+            padding-left: 1.3rem;
+            color: $ink-muted;
+            font-size: .88rem;
+            line-height: 1.5;
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: .5rem;
+                left: .1rem;
+                width: .4rem;
+                height: .4rem;
+                background-color: $primary;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    &--center &__list {
+        display: inline-block;
+        text-align: left;
+    }
+}
+
+// --- Banda destacada (color del tema) -----------------------------------
+.institution-band {
+    padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 5rem);
+    color: $white;
+    background-color: $primary;
+
+    &__inner {
+        max-width: 72rem;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    &__title {
+        margin: 0 0 clamp(2.25rem, 5vw, 3.25rem);
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: clamp(1.5rem, 3.6vw, 2.15rem);
+        font-weight: 700;
+        letter-spacing: -.018em;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem 2rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+    }
+}
+
+.institution-stat {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    padding: 1rem .5rem;
+
+    &__value {
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: clamp(2rem, 5vw, 2.9rem);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -.02em;
+    }
+
+    &__label {
+        color: rgba($white, .82);
+        font-size: .95rem;
+        font-weight: 600;
+    }
+
+    & + & {
+        @include media-breakpoint-up(md) {
+            border-left: 1px solid rgba($white, .16);
+        }
+    }
+}
+
+// --- Pasos ----------------------------------------------------------------
+.institution-steps {
+    max-width: 96rem;
+    padding: 0;
+    list-style: none;
+}
+
+.institution-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: clamp(1.75rem, 2.6vw, 2.5rem) clamp(1.4rem, 2vw, 1.9rem);
+    background-color: $surface;
+    border: 1px solid $hairline;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+
+    &__num {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        background-color: $primary;
+        border-radius: 50%;
+    }
+
+    h3 {
+        margin: .15rem 0 .35rem;
+        color: $dark;
+        font-family: $font-family-sans-serif;
+        font-size: 1.02rem;
+        font-weight: 700;
+        letter-spacing: -.01em;
+    }
+
+    p {
+        margin: 0;
+        color: $ink-muted;
+        font-size: .92rem;
+        line-height: 1.5;
+    }
+}
+
+// --- FAQ (acordeón nativo con apertura/cierre animados) ----------------
+// Dos columnas en escritorio: texto de apoyo + acordeón. Ocupa el ancho.
+.institution-faq-layout {
+    display: grid;
+    grid-template-columns: 22rem minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+    width: 100%;
+    max-width: 84rem;
+    margin: 0 auto;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+        max-width: 52rem;
+        text-align: center;
+    }
+}
+
+.institution-faq__aside {
+    h2 {
+        margin: 0 0 .9rem;
+        color: $dark;
+        font-family: $font-family-sans-serif;
+        font-size: clamp(1.5rem, 3.6vw, 2.15rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -.018em;
+    }
+
+    p {
+        margin: 0;
+        color: $ink-muted;
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+}
+
+.institution-faq {
+    width: 100%;
+    margin: 0;
+
+    &__item {
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+        transition: border-color .18s ease, box-shadow .18s ease;
+
+        & + & {
+            margin-top: .85rem;
+        }
+
+        &[open] {
+            border-color: rgba($primary, .35);
+            box-shadow: $shadow-sm;
+        }
+
+        summary {
+            position: relative;
+            display: block;
+            padding: 1.25rem 3rem 1.25rem 1.4rem;
+            color: $dark;
+            font-family: $font-family-sans-serif;
+            font-size: 1.02rem;
+            font-weight: 700;
+            line-height: 1.4;
+            list-style: none;
+            cursor: pointer;
+            transition: color .16s ease;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &:hover {
+                color: $primary;
+            }
+
+            i {
+                position: absolute;
+                top: 1.35rem;
+                right: 1.25rem;
+                color: $primary;
+                font-size: .85rem;
+                transition: transform .28s ease;
+            }
+        }
+
+        &[open] summary i {
+            transform: rotate(180deg);
+        }
+
+        // En una sola columna, el texto de la pregunta va centrado en su
+        // espacio (mismo margen a ambos lados, con hueco para la flecha).
+        @include media-breakpoint-down(lg) {
+            summary {
+                padding-left: 3rem;
+                text-align: center;
+            }
+        }
+
+        // El cuerpo se mantiene siempre en el flujo (anulando el display:none
+        // del user-agent para `details:not([open])`) y se anima con
+        // grid-template-rows, de modo que abre Y cierra de forma suave.
+        > .institution-faq__body {
+            display: grid !important;
+        }
+    }
+
+    &__body {
+        grid-template-rows: 0fr;
+        overflow: hidden;
+        transition: grid-template-rows .3s ease;
+
+        > p {
+            min-height: 0;
+            margin: 0;
+            padding: 0 1.4rem 1.3rem;
+            color: $ink-muted;
+            font-size: .96rem;
+            line-height: 1.65;
+            text-align: left;
+        }
+    }
+
+    &__item[open] > &__body {
+        grid-template-rows: 1fr;
+    }
+}
+
+// --- FOOTER -----------------------------------------------------------
+.institution-footer {
+    width: 100%;
+    padding: clamp(2.5rem, 6vw, 3.75rem) clamp(1.25rem, 5vw, 5rem) 0;
+    color: rgba($white, .7);
+    background-color: darken($primary, 16%);
+
+    &__inner {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 2rem clamp(2rem, 5vw, 5rem);
+        width: 100%;
+        max-width: 90rem;
+        margin: 0 auto;
+        padding-bottom: 2.25rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.75rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+            text-align: center;
+        }
+    }
+
+    &__brand {
+        @include media-breakpoint-down(md) {
+            grid-column: 1 / -1;
+        }
+    }
+
+    &__logo {
+        display: inline-flex;
+        gap: .6rem;
+        align-items: center;
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -.01em;
+
+        i {
+            color: rgba($white, .8);
+        }
+
+        @include media-breakpoint-down(sm) {
+            justify-content: center;
+        }
+    }
+
+    &__tagline {
+        max-width: 24rem;
+        margin: .7rem 0 1rem;
+        font-size: .9rem;
+        line-height: 1.55;
+
+        @include media-breakpoint-down(sm) {
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
+
+    &__social {
+        display: flex;
+        gap: .35rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(sm) {
+            justify-content: center;
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.1rem;
+            height: 2.1rem;
+            color: rgba($white, .6);
+            font-size: .95rem;
+            border-radius: 50%;
+            transition: color .14s ease, background-color .14s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: $white;
+                background-color: rgba($white, .12);
+            }
+        }
+    }
+
+    &__col {
+        h2 {
+            margin: 0 0 .8rem;
+            color: $white;
+            font-family: $font-family-sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li + li {
+            margin-top: .5rem;
+        }
+
+        a {
+            color: rgba($white, .7);
+            font-size: .93rem;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                color: $white;
+                text-decoration: underline;
+                text-underline-offset: .2em;
+            }
+        }
+    }
+
+    &__bar {
+        max-width: 90rem;
+        margin: 0 auto;
+        padding: 1.2rem 0;
+        color: rgba($white, .5);
+        font-size: .83rem;
+        text-align: center;
+        border-top: 1px solid rgba($white, .12);
+    }
+}
+
+// Fotografías institucionales con fundido lento y controles táctiles.
+.institution-hero {
+    &__slides,
+    &__slide {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__slides {
+        z-index: -2;
+        background: $primary;
+    }
+
+    &__slide {
+        object-fit: cover;
+        object-position: center;
+        opacity: 0;
+        transition: opacity 2.4s ease-in-out;
+
+        &.is-active {
+            opacity: 1;
+        }
+    }
+
+    &__inner {
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr);
+        gap: clamp(1.5rem, 4vw, 4rem);
+        padding-bottom: 3rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+    }
+
+    &__content {
+        min-width: 0;
+        max-width: 39rem;
+        text-align: left;
+
+        @include media-breakpoint-down(md) {
+            margin: auto;
+            text-align: center;
+        }
+    }
+
+    &__lead {
+        margin-left: 0;
+
+        @include media-breakpoint-down(md) {
+            margin-inline: auto;
+        }
+    }
+
+    &__actions {
+        justify-content: flex-start;
+
+        @include media-breakpoint-down(md) {
+            justify-content: center;
+        }
+    }
+
+    &__controls {
+        position: absolute;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        left: 1.25rem;
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__dot {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 2px solid $white;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        span {
+            width: 26px;
+            height: 3px;
+            background: rgba($white, .45);
+            border-radius: 2px;
+            transition: background-color .6s ease, width .6s ease;
+        }
+
+        &[aria-pressed="true"] span {
+            width: 34px;
+            background: $white;
+        }
+
+        &:hover span {
+            background: $white;
+        }
+    }
+}
+
+// Tarjeta secundaria: contraste claro, jerarquía breve y acento institucional.
+.institution-hero-notice {
+    display: flex;
+    flex-direction: column;
+    justify-self: end;
+    min-width: 0;
+    width: 100%;
+    max-width: 29rem;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(1.75rem, 3.2vw, 2.75rem);
+    color: $white;
+    text-align: left;
+    background: linear-gradient(135deg, $primary, #001b42);
+    border: 1px solid rgba($white, .3);
+    border-radius: 1rem;
+    box-shadow: 0 18px 48px rgba(#000, .16);
+    overflow-wrap: anywhere;
+    transition: box-shadow .35s ease, border-color .35s ease;
+
+    &::before {
+        position: absolute;
+        top: -5rem;
+        right: -5rem;
+        z-index: -1;
+        width: 15rem;
+        height: 15rem;
+        background: radial-gradient(circle, rgba($white, .14), transparent 70%);
+        pointer-events: none;
+        content: "";
+    }
+
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        &:hover {
+            border-color: rgba($white, .55);
+            box-shadow: 0 24px 56px rgba(#000, .25);
+        }
+    }
+
+    &__head {
+        display: flex;
+        gap: .7rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        color: $white;
+        background: $accent;
+        border-radius: .5rem;
+    }
+
+    &__eyebrow {
+        color: $white;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        margin: 0 0 .8rem;
+        color: $white;
+        font-size: clamp(1.8rem, 2.6vw, 2.25rem);
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    &__description {
+        margin: 0 0 1.5rem;
+        color: rgba($white, .9);
+        font-size: 1.05rem;
+        line-height: 1.65;
+    }
+
+    &__link {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        margin-top: .5rem;
+        padding: .85rem 1rem;
+        background: $white;
+        border-radius: .6rem;
+        color: $primary !important;
+        font-size: .9rem;
+        font-weight: 700;
+        border: 1px solid rgba($white, .2);
+
+        &:hover {
+            color: $accent !important;
+        }
+
+        &:focus-visible {
+            outline: 3px solid $white;
+            outline-offset: 4px;
+            border-radius: .2rem;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        justify-self: center;
+        max-width: 30rem;
+
+    }
+}
+
+// Acabado de portada: relieve suave y detalles de la identidad institucional.
+.institution-hero {
+    position: relative;
+    isolation: isolate;
+
+    &::before {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(90deg, rgba(#001b42, .9), rgba(#001b42, .65) 55%, rgba(#001b42, .2));
+        pointer-events: none;
+        content: "";
+
+        @include media-breakpoint-down(lg) {
+            background: rgba(#001b42, .76);
+        }
+    }
+
+    &::after {
+        position: absolute;
+        right: 5%;
+        bottom: 0;
+        left: 5%;
+        height: 1px;
+        background-color: rgba($white, .2);
+        pointer-events: none;
+        content: "";
+    }
+
+    &__panel {
+        transition: border-color .3s ease, box-shadow .3s ease;
+
+        &:hover {
+            border-color: rgba($white, .45);
+            box-shadow: 0 24px 48px rgba(#000, .18);
+        }
+    }
+}
+
+.institution-section {
+    position: relative;
+    isolation: isolate;
+
+    &__head::before {
+        display: block;
+        width: 2.5rem;
+        height: 3px;
+        margin: 0 auto 1.15rem;
+        background-color: $primary;
+        border-radius: 2px;
+        content: "";
+    }
+
+    // Formas grandes en los bordes: decorativas y siempre detrás del contenido.
+    overflow: clip;
+
+    &::before,
+    &::after {
+        position: absolute;
+        z-index: -1;
+        width: clamp(12rem, 30vw, 28rem);
+        height: clamp(12rem, 30vw, 28rem);
+        pointer-events: none;
+        content: "";
+    }
+
+    &--learning::before {
+        top: -12rem;
+        left: -10rem;
+        border: 1px solid rgba($primary, .09);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3rem rgba($primary, .025), 0 0 0 6rem rgba($primary, .015);
+    }
+
+    &--learning::after {
+        right: -10rem;
+        bottom: -15rem;
+        background: rgba($primary, .025);
+        border-radius: 50%;
+    }
+
+    &--resources::before {
+        top: -9rem;
+        right: -8rem;
+        background: rgba($primary, .025);
+        border: 1px solid rgba($primary, .055);
+        border-radius: 3rem;
+        transform: rotate(-20deg);
+    }
+
+    &--resources::after {
+        bottom: -13rem;
+        left: -8rem;
+        border: 1px solid rgba($primary, .07);
+        border-radius: 3rem;
+        transform: rotate(-20deg);
+    }
+
+    &--steps::before {
+        top: 15%;
+        left: -17rem;
+        border: 1px solid rgba($primary, .07);
+        border-radius: 50%;
+        box-shadow: 0 0 0 2.5rem rgba($primary, .02);
+    }
+
+    &--steps::after {
+        right: -10rem;
+        bottom: -17rem;
+        background: rgba($primary, .025);
+        border-radius: 45% 55% 65% 35%;
+    }
+
+    &#institution-faq::before {
+        top: -12rem;
+        left: -8rem;
+        background: rgba($primary, .025);
+        border-radius: 50% 50% 50% 12%;
+        transform: rotate(-12deg);
+    }
+
+    &#institution-faq::after {
+        right: -12rem;
+        bottom: -12rem;
+        border: 1px solid rgba($primary, .07);
+        border-radius: 50% 50% 12% 50%;
+    }
+
+    @include media-breakpoint-down(sm) {
+        &::before,
+        &::after {
+            opacity: .5;
+        }
+    }
+}
+
+.institution-card {
+    &__icon {
+        background-color: rgba($primary, .06);
+        transition: background-color .25s ease, transform .25s ease;
+    }
+
+    &:hover &__icon {
+        background-color: rgba($primary, .1);
+        transform: translateY(-2px);
+    }
+}
+
+.institution-band {
+    border-top: 1px solid rgba($white, .15);
+    border-bottom: 1px solid rgba($white, .15);
+}
+
+.institution-faq__item {
+    &:hover {
+        border-color: rgba($primary, .24);
+    }
+
+    summary:focus-visible {
+        outline: 2px solid $interactive;
+        outline-offset: 3px;
+        border-radius: $border-radius;
+    }
+}
+
+@keyframes institution-enter {
+    from {
+        opacity: 0;
+        transform: translate3d(calc(var(--institution-reveal-direction, -1) * var(--institution-reveal-distance, 56px)), 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .institution-reveal-pending {
+        opacity: 0;
+        transform: translate3d(calc(var(--institution-reveal-direction, -1) * var(--institution-reveal-distance, 56px)), 0, 0);
+    }
+
+    @include media-breakpoint-down(sm) {
+        .institution-reveal-pending,
+        .institution-enter {
+            --institution-reveal-distance: 20px;
+        }
+    }
+
+    .institution-enter {
+        animation: institution-enter 1.3s cubic-bezier(.25, .75, .3, 1) both;
+        animation-delay: var(--institution-reveal-delay, 0ms);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .institution-hero *,
+    .institution-card,
+    .institution-card__icon,
+    .institution-step,
+    .institution-btn,
+    .institution-faq__item,
+    .institution-faq__body,
+    .institution-faq summary i {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+// --- Responsive ------------------------------------------------------
+@include media-breakpoint-down(sm) {
+    .institution-step {
+        padding: 1.35rem 1.1rem;
+    }
+}
+
+// Mostrar todo el contenido al imprimir, incluso las secciones aún no recorridas.
+@media print {
+    .institution-reveal-pending,
+    .institution-enter {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+// La banda conserva su contraste con un relieve blanco apenas perceptible.
+.institution-band {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+
+    &::before {
+        position: absolute;
+        top: -12rem;
+        right: -8rem;
+        z-index: -1;
+        width: 28rem;
+        height: 28rem;
+        border: 1px solid rgba($white, .1);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3rem rgba($white, .025);
+        pointer-events: none;
+        content: "";
+    }
+}
+
+// Los accesos del hero conservan su apariencia de botón en todos sus estados.
+body.has-institution-hero #region-main .institution-hero {
+    .institution-btn,
+    .institution-hero-notice__link {
+        &,
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &:active {
+            text-decoration: none !important;
+        }
+    }
+}
+
+// Fotografía del campus integrada al azul de la banda de comunidad.
+.institution-band__background {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: .22;
+    pointer-events: none;
+}
+
+// Marca oficial del pie sin fondo añadido.
+.institution-footer__brand-image {
+    display: block;
+    box-sizing: border-box;
+    width: min(100%, 16rem);
+    max-width: 100%;
+    height: auto;
+    padding: 0;
+    object-fit: contain;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+// Variante para fondo oscuro: escudo original y letras blancas con la misma silueta.
+.institution-footer__logo--inverse {
+    position: relative;
+    display: block;
+    width: min(100%, 16rem);
+    max-width: 100%;
+
+    .institution-footer__brand-image {
+        width: 100%;
+    }
+
+    .institution-footer__brand-image--letters {
+        position: absolute;
+        inset: 0;
+        filter: brightness(0) invert(1);
+        clip-path: inset(0 0 0 22%);
+        pointer-events: none;
+    }
+}
+
+// Navegación de gestión sobre la fotografía, exclusivamente en la portada.
+body#page-site-index.has-institution-hero {
+    .institution-hero--with-navigation {
+        padding-top: clamp(8rem, 12vw, 10rem);
+
+        .secondary-navigation {
+            position: absolute;
+            top: 1rem;
+            right: clamp(1.25rem, 5vw, 5rem);
+            left: clamp(1.25rem, 5vw, 5rem);
+            z-index: 3;
+            width: fit-content;
+            max-width: calc(100% - clamp(2.5rem, 10vw, 10rem));
+            margin: 0 auto;
+            padding: .25rem .5rem;
+            background-color: transparent !important;
+            border: 0;
+            border-radius: .75rem;
+            box-shadow: none;
+
+            .navigation,
+            .moremenu,
+            .nav-tabs,
+            .more-nav,
+            .nav-item {
+                background-color: transparent !important;
+            }
+
+            .nav-link {
+                color: rgba($white, .92) !important;
+                text-shadow: 0 1px 5px rgba(#000, .65);
+                border-radius: .4rem !important;
+
+                &:hover,
+                &:focus-visible,
+                &.active,
+                &[aria-current="page"] {
+                    color: $white !important;
+                    background-color: transparent !important;
+                }
+
+                &::after {
+                    display: none;
+                }
+            }
+
+            .dropdown-menu {
+                background-color: $white;
+
+                .dropdown-item {
+                    color: $primary !important;
+                    text-shadow: none;
+                }
+            }
+        }
+    }
+
+    #page,
+    #page-content,
+    #region-main,
+    #page.drawers .main-inner {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    #region-main > [role="main"]:empty {
+        display: none;
+    }
+
+    // El footer ya es hijo de page-wrapper, por lo que no necesita márgenes a sangre.
+    #page-wrapper > .institution-footer {
+        align-self: stretch;
+        width: auto;
+        margin: 0;
+    }
+}

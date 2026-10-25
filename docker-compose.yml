@@ -1,0 +1,53 @@
+name: universidad-arzobispo-loaysa
+
+services:
+  moodle:
+    image: universidad-arzobispo-loaysa-moodle
+    build: .
+    ports:
+      - "127.0.0.1:${MOODLE_PORT:?Define MOODLE_PORT}:80"
+    environment:
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT:?Define MOODLE_WWWROOT}
+      MOODLE_DB_PASSWORD: ${MOODLE_DB_PASSWORD:?Define MOODLE_DB_PASSWORD}
+    volumes:
+      - ./moodle:/var/www/html
+      - moodledata:/var/www/moodledata
+    depends_on:
+      db:
+        condition: service_healthy
+
+  cron:
+    image: universidad-arzobispo-loaysa-moodle
+    user: www-data
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do php admin/cli/cron.php --keep-alive=0; sleep 60; done"]
+    environment:
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT:?Define MOODLE_WWWROOT}
+      MOODLE_DB_PASSWORD: ${MOODLE_DB_PASSWORD:?Define MOODLE_DB_PASSWORD}
+    volumes:
+      - ./moodle:/var/www/html
+      - moodledata:/var/www/moodledata
+    depends_on:
+      moodle:
+        condition: service_started
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_DATABASE: moodle
+      MARIADB_USER: moodle
+      MARIADB_PASSWORD: ${MOODLE_DB_PASSWORD:?Define MOODLE_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Define DB_ROOT_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  moodledata:
+  dbdata:

@@ -1,0 +1,19 @@
+{{!
+    @template theme_institution/mod_forum/news_discussion_list
+
+    Announcement list using Moodle's discussion controls, permissions and pagination.
+    Only the empty state is customised; populated lists inherit the core template.
+    Example context (json): {}
+}}
+{{< mod_forum/discussion_list }}
+    {{$discussion_create_text}}
+        {{#str}}addanewtopic, forum{{/str}}
+    {{/discussion_create_text}}
+    {{$no_discussions_text}}
+        <div class="institution-forum-empty">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <h3>{{#str}}forumemptytitle, theme_institution{{/str}}</h3>
+            <p>{{#str}}forumemptydescription, theme_institution{{/str}}</p>
+        </div>
+    {{/no_discussions_text}}
+{{/ mod_forum/discussion_list }}

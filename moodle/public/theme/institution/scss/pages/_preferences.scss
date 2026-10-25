@@ -1,0 +1,127 @@
+// Preferencias del usuario ("Cuenta de usuario", "Blogs", "Insignias"…).
+//
+// Moodle renderiza cada grupo como `.col-md-4 > .card.mb-3` dentro de un
+// `.row`. Se adopta exactamente el mismo lenguaje que la vista "Mi Perfil":
+// una sola columna, tarjetas blancas a todo el ancho sobre el lienzo, filete
+// de acento en cada título y filas de enlaces separadas por líneas finas.
+// Solo estilo.
+
+body#page-user-preferences {
+    // Lienzo fuera, sin el marco blanco exterior (como en el perfil).
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+
+    // Una sola columna: se anula el `.row` / `.col-md-4` de Moodle.
+    .preferences-container .row,
+    #region-main .container-fluid > .row {
+        display: block !important;
+        margin: 0;
+    }
+
+    .preferences-container .row > [class*="col-"],
+    #region-main .container-fluid > .row > [class*="col-"] {
+        width: 100% !important;
+        max-width: none !important;
+        flex: none !important;
+        padding: 0 !important;
+    }
+
+    // Cada grupo = tarjeta blanca a todo el ancho.
+    .preferences-group .card,
+    #region-main .container-fluid .card {
+        margin-bottom: 1.15rem !important;
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &:hover {
+            border-color: rgba($primary, .22);
+            box-shadow: $shadow-md;
+        }
+
+        > .card-body {
+            padding: 1.15rem 1.35rem 1.25rem;
+        }
+
+        // Título del grupo: filete de acento a la izquierda.
+        .card-title,
+        h3 {
+            position: relative;
+            margin: 0 0 .4rem;
+            padding-left: .7rem;
+            color: $dark;
+            font-family: $font-family-sans-serif;
+            font-size: 1.02rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -.012em;
+
+            &::before {
+                position: absolute;
+                top: .12em;
+                bottom: .12em;
+                left: 0;
+                width: 3px;
+                background-color: $accent;
+                border-radius: 2px;
+                content: "";
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 0 !important;
+            padding: .62rem 0;
+            border-top: 1px solid $hairline;
+
+            &:first-of-type {
+                padding-top: .3rem;
+                border-top: 0;
+            }
+        }
+
+        a {
+            color: $link-color;
+            font-weight: 500;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                color: $link-hover-color;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    // Título de la página.
+    #region-main h2,
+    .page-context-header h1 {
+        margin-bottom: 1.25rem;
+        color: $dark;
+        font-weight: 700;
+        letter-spacing: -.02em;
+    }
+}

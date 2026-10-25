@@ -1,0 +1,48 @@
+// Las vistas que pertenecen a la navegación de la página principal del sitio
+// (Página principal, Configuración, Participantes, Informes, Banco de preguntas
+// y las opciones de "Más") comparten el mismo lienzo. La clase course-1 la
+// añade Moodle a todas ellas y :has() evita extender este tratamiento a otras
+// páginas del sitio que no muestran esa navegación secundaria.
+body.course-1:has(.secondary-navigation) {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $white !important;
+        border: 1px solid rgba($dark, .08);
+        border-radius: .9rem;
+        box-shadow: 0 8px 24px rgba($dark, .07);
+    }
+
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item {
+        background-color: $white !important;
+    }
+
+    .secondary-navigation {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba($dark, .07);
+        border-radius: 0;
+        box-shadow: none;
+
+        .navigation,
+        .moremenu {
+            border: 0;
+            box-shadow: none;
+        }
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+}
+

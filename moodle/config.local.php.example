@@ -1,0 +1,25 @@
+<?php
+// REFERENCIA sin Docker. Se recomienda dejar que el asistente cree config.php.
+// Si usas esta plantilla, copia a moodle/config.php y reemplaza rutas y claves.
+unset($CFG);
+global $CFG;
+$CFG = new stdClass();
+$CFG->dbtype = 'mariadb';
+$CFG->dblibrary = 'native';
+$CFG->dbhost = 'localhost';
+$CFG->dbname = 'moodle_loayza';
+$CFG->dbuser = 'loayza';
+$CFG->dbpass = 'CAMBIAR_CLAVE';
+$CFG->prefix = 'mdl_';
+$CFG->dboptions = [
+    'dbpersist' => false,
+    'dbport' => 3306,
+    'dbsocket' => false,
+    'dbcollation' => 'utf8mb4_unicode_ci',
+];
+$CFG->wwwroot = 'http://localhost:8081';
+// Linux: /srv/moodledata/loayza. Windows: C:/moodledata/loayza.
+$CFG->dataroot = '/RUTA/FUERA/DEL/AREA/PUBLICA/moodledata';
+$CFG->admin = 'admin';
+$CFG->directorypermissions = 02770;
+require_once(__DIR__ . '/lib/setup.php');

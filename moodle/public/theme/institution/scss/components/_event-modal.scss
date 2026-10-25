@@ -1,0 +1,124 @@
+// Resumen de evento. La clase nace con el template del modal, antes de que
+// Moodle cargue su cuerpo asíncrono, evitando parpadeos y cambios de tamaño.
+.theme-institution-event-summary {
+    max-width: 42rem;
+    outline: 0;
+
+    &:focus,
+    &:focus-visible {
+        outline: 0;
+    }
+
+    .modal-content {
+        overflow: hidden;
+        background-color: $white;
+        border: 1px solid rgba($dark, .08);
+        border-radius: 1rem;
+        box-shadow: 0 24px 64px rgba($dark, .24);
+    }
+
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+        color: $dark;
+        background-color: $surface;
+        border-bottom: 1px solid $hairline;
+
+        .modal-title {
+            color: inherit;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -.015em;
+        }
+
+        .btn-close,
+        [data-action="hide"] {
+            color: $dark;
+            filter: none;
+            opacity: .55;
+
+            &:hover,
+            &:focus-visible {
+                opacity: 1;
+            }
+        }
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+        background-color: $white;
+    }
+
+    .summary-modal-container {
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 2.5rem minmax(0, 1fr);
+            gap: .75rem;
+            align-items: center;
+            margin: 0;
+            padding: .45rem 0;
+
+            > .col-1,
+            > .col-11 {
+                width: auto;
+                max-width: none;
+                padding: 0;
+            }
+
+            > .col-1 {
+                display: grid;
+                width: 2.25rem;
+                height: 2.25rem;
+                color: $primary;
+                background-color: $sunken;
+                border-radius: 50%;
+                place-items: center;
+
+                .icon {
+                    margin: 0;
+                }
+            }
+
+            > .col-11 {
+                color: $dark;
+                line-height: 1.45;
+
+                a {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .modal-footer {
+        gap: .5rem;
+        padding: 1rem 1.5rem;
+        background-color: $light;
+        border-top: 1px solid rgba($dark, .07);
+
+        .btn {
+            min-width: 6rem;
+            padding: .6rem 1rem;
+            font-weight: 600;
+            border-radius: $border-radius;
+        }
+    }
+}
+
+// Boost dibuja un anillo azul de .25rem sobre .modal-content cuando el
+// contenedor con tabindex recibe foco. Conservamos solo el borde neutro.
+.modal-dialog.theme-institution-event-summary[tabindex="0"] {
+    &.focus,
+    &:focus,
+    &:focus-visible {
+        .modal-content {
+            border: 1px solid rgba($dark, .08);
+            border-radius: 1rem;
+            box-shadow: 0 24px 64px rgba($dark, .24);
+        }
+    }
+}
+

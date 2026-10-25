@@ -1,0 +1,519 @@
+// Todas las vistas que conservan el índice lateral del curso (Curso,
+// Participantes, Calificaciones, Actividades y Competencias) comparten el
+// mismo lienzo gris y superficie blanca que el resto del tema.
+body:has(#theme_boost-drawers-courseindex) {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $white !important;
+        border: 1px solid rgba($dark, .08);
+        border-radius: .9rem;
+        box-shadow: 0 8px 24px rgba($dark, .07);
+    }
+
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item {
+        background-color: $white !important;
+    }
+
+    .secondary-navigation {
+        margin-bottom: 1rem;
+        padding-bottom: 0;
+        border-bottom: 1px solid rgba($dark, .07);
+
+        .navigation {
+            border-bottom: 0;
+            box-shadow: none;
+        }
+
+        .nav-tabs {
+            max-width: none;
+        }
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main,
+    .course-content {
+        background-color: transparent !important;
+    }
+
+    .course-content > ul {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .course-section {
+        margin: 0;
+        overflow: hidden;
+        background-color: $white;
+        border: 1px solid rgba($dark, .085);
+        border-radius: .9rem;
+        box-shadow: 0 4px 14px rgba($dark, .045);
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &:hover,
+        &:focus-within {
+            border-color: rgba($primary, .2);
+            box-shadow: 0 7px 20px rgba($dark, .07);
+        }
+
+        &.current {
+            border-left: 3px solid $primary;
+        }
+
+        > .section-item {
+            padding: 1rem;
+            background-color: transparent;
+            border: 0;
+            border-radius: 0;
+        }
+
+        .course-section-header {
+            margin-bottom: .65rem;
+
+            h2,
+            h3 {
+                color: $dark;
+                font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+                font-weight: 700;
+                letter-spacing: -.015em;
+            }
+
+            a {
+                color: $dark;
+                text-decoration: none;
+            }
+        }
+
+        .activity-item {
+            background-color: rgba($light, .38);
+            border: 1px solid rgba($dark, .06);
+            border-radius: .7rem;
+
+            &:hover,
+            &:focus-within {
+                background-color: $sunken;
+                border-color: rgba($primary, .16);
+            }
+
+            // Actividad completada: señal discreta en el borde izquierdo.
+            &:has(.completion-dropdown .btn[aria-label*="Hecho"]),
+            &:has(.completion-dropdown .btn[aria-label*="Done"]),
+            &.completion-complete {
+                border-left: 3px solid $success;
+            }
+        }
+
+        // Botón de finalización manual.
+        .completion-dropdown .btn,
+        .btn.completion-icon {
+            border-radius: 999px;
+
+            &[aria-label*="Hecho"],
+            &[aria-label*="Done"] {
+                color: $success;
+                border-color: rgba($success, .4);
+            }
+        }
+
+        // Restricciones de acceso ("No disponible hasta…").
+        .availabilityinfo {
+            margin-top: .5rem;
+            padding: .5rem .7rem;
+            color: darken($accent, 8%);
+            font-size: .85rem;
+            background-color: $accent-soft;
+            border-radius: $border-radius-sm;
+        }
+    }
+}
+
+// Vista general de Calificaciones. Se conservan la tabla, enlaces y valores
+// nativos de Moodle; únicamente se integran en una tarjeta visual continua.
+body.path-grade-report-overview {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        padding: clamp(1rem, 2vw, 1.5rem);
+        background-color: transparent !important;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    #page-content,
+    #region-main-box {
+        background-color: transparent !important;
+    }
+
+    #region-main {
+        padding: clamp(1.5rem, 2.5vw, 2.25rem) !important;
+        background-color: $white !important;
+        border: 0;
+        border-radius: 1rem;
+        box-shadow: $shadow-md;
+    }
+
+    #region-main > h3 {
+        margin: 0 0 clamp(1.5rem, 2.5vw, 2.25rem);
+        padding: 0;
+        color: $dark;
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -.02em;
+    }
+
+    #region-main > h3 + br {
+        display: none;
+    }
+
+    .table-responsive,
+    .no-overflow {
+        margin: 0;
+    }
+
+    table[id^="grade-report-overview-"],
+    .grade-report-overview {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        border: 1px solid rgba($dark, .12);
+
+        th,
+        td {
+            padding: 1.15rem clamp(1rem, 2.5vw, 2rem);
+            color: $dark;
+            vertical-align: middle;
+            border: 1px solid rgba($dark, .12);
+        }
+
+        thead th {
+            color: $dark;
+            font-size: 1rem;
+            font-weight: 700;
+            background-color: $white;
+        }
+
+        tbody td {
+            background-color: $white;
+        }
+
+        a {
+            color: $primary;
+            font-weight: 700;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                color: darken($primary, 8%);
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &.institution-grade-overview-ready {
+        #region-main {
+            padding: 0 !important;
+            background-color: transparent !important;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        #region-main > h3 {
+            display: none;
+        }
+
+        #overview-grade {
+            display: none;
+        }
+    }
+
+    .institution-grade-cards {
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .institution-grade-card {
+        overflow: hidden;
+        font-size: .875rem;
+        background-color: $white;
+        border: 1px solid rgba($dark, .08);
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+
+        > header {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            padding: clamp(1.25rem, 2.5vw, 2rem);
+        }
+    }
+
+    .institution-grade-card__title {
+        max-width: 75%;
+        margin: 0;
+        color: $primary;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+
+    .institution-grade-card__summary {
+        display: flex;
+        gap: .65rem;
+        align-items: center;
+        color: $dark;
+        font-size: .875rem;
+        white-space: nowrap;
+
+        span {
+            font-weight: 600;
+        }
+
+        strong {
+            min-width: 2.75rem;
+            padding: .45rem .7rem;
+            color: $white;
+            text-align: center;
+            background-color: $primary;
+            border-radius: $border-radius-sm;
+        }
+    }
+
+    .institution-grade-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 0 clamp(1.25rem, 2.5vw, 2rem);
+    }
+
+    .institution-grade-card__people {
+        display: inline-flex;
+        gap: .55rem;
+        align-items: center;
+        margin: 0 clamp(1.25rem, 2.5vw, 2rem) 1.5rem;
+        color: $primary;
+        font-weight: 700;
+        text-decoration: underline;
+
+        .fa {
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: darken($primary, 8%);
+        }
+    }
+
+    .institution-grade-tab {
+        min-height: 3.5rem;
+        padding: .8rem 1rem;
+        color: $primary;
+        font-family: inherit;
+        font-size: .875rem;
+        font-weight: 700;
+        background-color: $white;
+        border: 1px solid rgba($dark, .14);
+        transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+
+        + .institution-grade-tab {
+            border-left: 0;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+        }
+
+        &.is-active,
+        &[aria-selected="true"] {
+            color: $white;
+            background-color: $primary;
+            border-color: $primary;
+        }
+    }
+
+    .institution-grade-panels {
+        padding: 0 clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem);
+    }
+
+    .institution-grade-panel {
+        padding-top: 1.5rem;
+        font-size: .875rem;
+
+        &[hidden] {
+            display: none;
+        }
+
+        > p:last-child {
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            margin: 0;
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding: .85rem 1rem;
+                font-size: .8125rem;
+                border-color: rgba($dark, .1);
+            }
+
+            thead th {
+                color: $dark;
+                background-color: $light;
+            }
+
+            tbody tr:nth-child(even) td,
+            tbody tr:nth-child(even) th {
+                background-color: rgba($light, .55);
+            }
+        }
+    }
+
+    // The report is loaded inside the overview page, outside its original
+    // body class. Keep exactly one of Moodle's expand/collapse arrows visible.
+    .institution-grade-panel--grades .user-grade th.category {
+        .toggle-category[aria-expanded="true"] .expanded,
+        .toggle-category[aria-expanded="false"] .collapsed {
+            display: none;
+        }
+    }
+
+    .institution-grade-course-link {
+        display: inline-flex;
+        margin-top: .5rem;
+        font-weight: 700;
+    }
+
+    .institution-grade-loading {
+        color: $secondary;
+    }
+
+    @include media-breakpoint-down(sm) {
+        .institution-grade-card > header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .institution-grade-card__title {
+            max-width: none;
+        }
+
+        .institution-grade-tabs {
+            grid-template-columns: 1fr;
+        }
+
+        .institution-grade-tab + .institution-grade-tab {
+            border-top: 0;
+            border-left: 1px solid rgba($dark, .14);
+        }
+    }
+}
+
+// Índice lateral del curso. Se mantiene porque es la navegación nativa de
+// Moodle, pero se presenta como un panel legible y separado del menú global.
+#theme_boost-drawers-courseindex {
+    background-color: $white;
+    border-right: 1px solid rgba($dark, .09);
+    box-shadow: 8px 0 24px rgba($dark, .09);
+
+    .drawerheader {
+        padding-inline: .65rem;
+        border-bottom: 1px solid rgba($dark, .07);
+    }
+
+    .drawercontent {
+        z-index: 0;
+        padding: .7rem;
+    }
+
+    .courseindex {
+        .courseindex-section {
+            margin-bottom: .3rem;
+            border-left: 0;
+
+            &.current {
+                padding-left: .35rem;
+                border-left: 3px solid $primary;
+            }
+        }
+
+        .courseindex-item {
+            min-width: 0;
+            margin-bottom: .15rem;
+            padding: .55rem .65rem;
+            border-radius: .55rem;
+
+            .courseindex-link {
+                overflow: hidden;
+                color: $dark;
+                font-size: .9rem;
+                line-height: 1.3;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            &:hover,
+            &:focus-within,
+            &.active {
+                background-color: $sunken;
+                border-color: rgba($primary, .12);
+            }
+
+            &.pageitem {
+                color: $white;
+                background-color: $primary;
+
+                .courseindex-link,
+                .courseindex-chevron {
+                    color: $white;
+                }
+            }
+        }
+    }
+}
+
+// Ampliar el enlace de cada actividad a toda su fila, sin simular eventos JS.
+#theme_boost-drawers-courseindex .courseindex-item[data-for="cm"]:has(> a.courseindex-link) {
+    position: relative;
+    min-height: 44px;
+
+    > a.courseindex-link {
+        position: static;
+        flex: 1 1 auto;
+        align-self: stretch;
+        align-content: center;
+
+        &::after {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            border-radius: inherit;
+            content: "";
+        }
+
+        &:focus-visible::after {
+            outline: 2px solid $primary;
+            outline-offset: -2px;
+        }
+    }
+}

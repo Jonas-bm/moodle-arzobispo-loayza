@@ -1,0 +1,156 @@
+// Página de Notificaciones (lista a la izquierda, detalle a la derecha).
+//
+// Se alinea con los colores del resto del tema: superficies blancas, líneas
+// divisorias `$hairline`, y el elemento seleccionado con gris suave + barra
+// de acento a la izquierda (no el azul saturado de Boost). Solo estilo.
+
+body#page-message-output-popup-notifications {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+}
+
+.notification-area {
+    overflow: hidden;
+    background-color: $surface;
+    border: 1px solid $hairline;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+
+    .control-area {
+        background-color: $surface;
+        border-right: 1px solid $hairline;
+    }
+
+    .content-area {
+        background-color: $surface;
+    }
+
+    .content-area > .header {
+        border-bottom: 1px solid $hairline;
+    }
+
+    .content-area > .footer {
+        border-top: 1px solid $hairline;
+        background-color: $surface;
+
+        a {
+            color: $link-color;
+            font-weight: 600;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    // --- Elementos de la lista -------------------------------------------
+    .content-item-container {
+        border-bottom: 1px solid $hairline;
+        transition: background-color .14s ease;
+
+        > a,
+        > div[tabindex] {
+            color: $dark;
+            text-decoration: none;
+        }
+
+        &:hover {
+            background-color: $sunken;
+        }
+
+        // Al abrir "Ver notificación completa" Moodle mueve el foco al
+        // elemento y el navegador dibuja un recuadro azul. Se elimina: el
+        // estado `.selected` (gris + filete de acento) ya lo indica.
+        &,
+        .context-link,
+        > a,
+        [tabindex],
+        div[tabindex] {
+            &:focus,
+            &:focus-visible,
+            &:focus-within {
+                outline: 0 !important;
+                box-shadow: none !important;
+            }
+        }
+
+        // Sin leer: asunto en negrita.
+        &.unread .notification-message {
+            color: $dark;
+            font-weight: 700;
+        }
+
+        .timestamp {
+            color: $ink-muted;
+        }
+
+        // Seleccionado: gris suave + filete de acento, con el color de marca
+        // en el texto. Nunca el azul saturado por defecto.
+        &.selected {
+            color: $dark !important;
+            background-color: $sunken !important;
+            border-color: $hairline !important;
+            box-shadow: inset 3px 0 0 $primary !important;
+
+            &:focus,
+            &:focus-visible,
+            &:focus-within {
+                box-shadow: inset 3px 0 0 $primary !important;
+            }
+
+            .notification-message {
+                color: darken($primary, 6%);
+            }
+
+            .timestamp {
+                color: $ink-muted !important;
+            }
+
+            > a,
+            > div[tabindex] {
+                color: inherit;
+            }
+        }
+    }
+
+    // Cabecera del detalle (asunto + fecha).
+    .content-area .header {
+        .notification-subject,
+        h3 {
+            color: $dark;
+            font-weight: 700;
+            letter-spacing: -.012em;
+        }
+    }
+}
+
+// Responsive: en móvil las dos zonas se apilan (lista arriba, detalle abajo).
+@include media-breakpoint-down(md) {
+    .notification-area {
+        display: block;
+
+        .control-area,
+        .content-area {
+            width: 100% !important;
+            max-width: none !important;
+            border-right: 0;
+        }
+
+        .control-area {
+            max-height: 45vh;
+            overflow-y: auto;
+            border-bottom: 1px solid $hairline;
+        }
+    }
+}

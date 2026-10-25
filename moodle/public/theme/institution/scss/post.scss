@@ -1,0 +1,34 @@
+// Institution — overrides loaded after Boost's default preset.
+// Keep these imports ordered: their sequence preserves the original cascade.
+
+@import "fonts";
+@import "components/typography";
+@import "components/ui";
+@import "components/navigation";
+@import "components/form-controls";
+@import "components/forms";
+@import "pages/participants";
+@import "pages/reports";
+@import "components/cards";
+@import "pages/frontpage";
+@import "components/page-header";
+@import "pages/settings";
+@import "layout";
+@import "pages/dashboard";
+@import "pages/mycourses";
+@import "pages/site-navigation";
+@import "components/event-modal";
+@import "pages/calendar";
+@import "pages/course";
+@import "pages/activity";
+@import "pages/grades";
+@import "pages/profile";
+@import "pages/preferences";
+@import "pages/notifications";
+@import "pages/dataprivacy";
+@import "pages/forum";
+@import "pages/login";
+@import "pages/admin";
+@import "pages/landing";
+@import "pages/announcements";
+@import "utilities/responsive";

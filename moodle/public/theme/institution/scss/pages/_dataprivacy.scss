@@ -1,0 +1,131 @@
+// "Resumen de retención de datos" (tool_dataprivacy) y páginas afines.
+//
+// Moodle lo pinta como una serie de `.card` con cabecera gris. Se alinea con
+// el resto del tema: lienzo fuera, superficie blanca, tarjetas limpias con
+// borde fino y el filete de acento en cada título. Solo estilo.
+
+body#page-admin-tool-dataprivacy-summary,
+body.path-admin-tool-dataprivacy {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08) !important;
+        border-radius: $border-radius-lg !important;
+        box-shadow: $shadow-sm !important;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+
+    #region-main > h2:first-child {
+        margin-bottom: .4rem;
+    }
+
+    #region-main > p {
+        margin-bottom: 1.5rem;
+        color: $ink-muted;
+    }
+
+    // Cada contexto = tarjeta blanca.
+    .card {
+        margin-bottom: 1.15rem !important;
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+
+        &:hover {
+            box-shadow: $shadow-md;
+        }
+
+        // Cabecera blanca con filete inferior; título con marca de acento.
+        > .card-header {
+            padding: .9rem 1.35rem;
+            background-color: $surface;
+            border-bottom: 1px solid $hairline;
+
+            h3 {
+                position: relative;
+                margin: 0;
+                padding-left: .7rem;
+                color: $dark;
+                font-family: $font-family-sans-serif;
+                font-size: 1.05rem;
+                font-weight: 700;
+                letter-spacing: -.012em;
+
+                &::before {
+                    position: absolute;
+                    top: .12em;
+                    bottom: .12em;
+                    left: 0;
+                    width: 3px;
+                    background-color: $accent;
+                    border-radius: 2px;
+                    content: "";
+                }
+            }
+        }
+
+        > .card-body {
+            padding: 1.15rem 1.35rem 1.25rem !important;
+            background-color: $surface;
+
+            h4 {
+                margin: 1.1rem 0 .5rem;
+                color: $ink-muted;
+                font-size: .78rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .05em;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            dl {
+                margin: 0 0 .5rem;
+            }
+
+            dt {
+                margin-bottom: .1rem;
+                color: $dark;
+                font-weight: 700;
+            }
+
+            dd {
+                margin: 0 0 .75rem;
+                color: $dark;
+                line-height: 1.5;
+            }
+        }
+
+        // Tablas internas (bases jurídicas, datos sensibles) con el estilo del
+        // tema.
+        .table {
+            margin-top: .5rem;
+            border-color: $hairline;
+
+            th {
+                color: $ink-muted;
+                font-weight: 700;
+                background-color: $sunken;
+            }
+
+            td,
+            th {
+                border-color: $hairline;
+            }
+        }
+    }
+}

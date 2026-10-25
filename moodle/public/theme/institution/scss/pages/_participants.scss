@@ -1,0 +1,474 @@
+// Participantes: tres zonas de filtro equivalentes aprovechan todo el ancho
+// disponible. En móvil vuelven a apilarse sin alterar el formulario de Moodle.
+body.path-user {
+    &,
+    #page-wrapper,
+    #page.drawers,
+    #page.drawers .main-inner,
+    #page-content,
+    #region-main-box,
+    #region-main,
+    #participantsform,
+    .userlist,
+    .filter-group,
+    .filter-group.bg-light {
+        background-color: $white !important;
+    }
+
+    #page.drawers .main-inner {
+        border-color: rgba($dark, .07);
+        box-shadow: 0 8px 24px rgba($dark, .055);
+    }
+
+    #participantsform,
+    #participantsform .no-overflow,
+    #participantsform .table-responsive,
+    #participantsform .userlist {
+        overflow: visible !important;
+    }
+
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item {
+        background-color: $white !important;
+    }
+
+    .filter-group {
+        border-color: rgba($dark, .09) !important;
+        box-shadow: none;
+    }
+
+    // Barras alfabéticas de nombre y apellido: se conserva cada enlace de
+    // Moodle y se mejora únicamente su presentación y respuesta adaptable.
+    .initialbar {
+        display: grid !important;
+        grid-template-columns: 7rem minmax(0, 1fr);
+        gap: .8rem;
+        align-items: center;
+        width: 100%;
+        margin: 0 0 .65rem;
+        padding: .65rem .75rem;
+        background-color: rgba($light, .55);
+        border: 1px solid rgba($dark, .075);
+        border-radius: .7rem;
+
+        .initialbarlabel {
+            margin: 0 !important;
+            color: $dark;
+            font-size: .9rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .initialbargroups {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            gap: .25rem;
+            min-width: 0;
+            padding: .1rem;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba($primary, .3) transparent;
+
+            ul.pagination {
+                flex: 0 0 auto;
+                gap: .25rem;
+                margin: 0 !important;
+            }
+
+            .page-item .page-link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 2.15rem;
+                height: 2.15rem;
+                padding: .25rem .5rem;
+                color: darken($primary, 4%);
+                font-size: .84rem;
+                font-weight: 600;
+                line-height: 1;
+                background-color: $white;
+                border: 1px solid rgba($primary, .14);
+                border-radius: .5rem !important;
+                box-shadow: 0 1px 2px rgba($dark, .025);
+                transition: color .15s ease, background-color .15s ease,
+                    border-color .15s ease, transform .15s ease;
+
+                &:hover,
+                &:focus-visible {
+                    color: darken($primary, 10%);
+                    background-color: $sunken;
+                    border-color: rgba($primary, .3);
+                    outline: 0;
+                    transform: translateY(-1px);
+                }
+            }
+
+            .page-item.active .page-link,
+            .page-link[aria-current="true"] {
+                color: $white;
+                background-color: $primary;
+                border-color: $primary;
+                box-shadow: 0 3px 8px rgba($primary, .2);
+            }
+
+            .initialbarall .page-link {
+                min-width: 3.6rem;
+                padding-inline: .7rem;
+            }
+        }
+    }
+
+    .filter-group [data-filterregion="filter"] fieldset > .d-flex {
+        display: grid !important;
+        grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto;
+        gap: .75rem !important;
+        align-items: center !important;
+
+        > .d-flex,
+        > [data-filterregion="value"] {
+            width: 100%;
+            min-width: 0;
+        }
+
+        > .d-flex:first-of-type {
+            display: contents !important;
+        }
+
+        .institution-form-select,
+        .institution-form-select--compact,
+        .institution-form-select__trigger,
+        .form-control,
+        .form-autocomplete-selection {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: none;
+            margin-bottom: 0;
+        }
+
+        > [data-filterregion="value"],
+        > [data-filterregion="value"] > *,
+        > [data-filterregion="value"] .form-autocomplete,
+        > [data-filterregion="value"] .form-autocomplete-input,
+        > [data-filterregion="value"] [data-filterfield] {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            flex: 1 1 100%;
+        }
+
+        > [data-filterregion="value"] {
+            display: block !important;
+            align-self: center !important;
+            min-height: 2.75rem;
+            margin: 0 !important;
+            padding: 0 !important;
+
+            .form-autocomplete-input {
+                display: block !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: none !important;
+                margin: 0 !important;
+            }
+
+            .form-autocomplete-input > input.form-control,
+            input[data-fieldtype="autocomplete"],
+            input.form-control {
+                display: block !important;
+                width: 100% !important;
+                height: 2.75rem !important;
+                min-width: 0 !important;
+                min-height: 2.75rem !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: .55rem .8rem !important;
+                line-height: 1.25;
+                background-color: $white;
+                border: 1px solid rgba($dark, .2);
+                border-radius: $border-radius;
+                box-shadow: 0 1px 2px rgba($dark, .04);
+            }
+
+            .form-autocomplete-downarrow {
+                right: .55rem;
+            }
+
+            // El autocompletado renderiza una segunda línea con el texto de
+            // “sin selección”. Se oculta mientras no exista una opción real
+            // para que el campo visible quede centrado como sus vecinos.
+            .form-autocomplete-selection:not(:has([data-value])) {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        // Moodle crea el control de valor después de elegir el tipo de filtro.
+        // Mientras está vacío se reserva la tercera columna con el aspecto de
+        // un campo deshabilitado, evitando saltos en la composición.
+        > [data-filterregion="value"]:not(:has(*))::before {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 2.75rem;
+            padding: .55rem .8rem;
+            color: rgba($secondary, .78);
+            content: "Seleccione una opción";
+            background-color: $light;
+            border: 1px solid rgba($dark, .13);
+            border-radius: $border-radius;
+            cursor: not-allowed;
+            opacity: .82;
+        }
+    }
+
+    // Con una sola condición, “Limpiar filtros” cubre la misma necesidad. Si
+    // se agregan más filas, Moodle vuelve a mostrar sus botones individuales.
+    .filter-group [data-filterregion="filters"] > [data-filterregion="filter"]:only-child {
+        [data-filteraction="remove"] {
+            display: none !important;
+        }
+
+        fieldset > .d-flex {
+            grid-template-columns: auto repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    #participantsform #formactionid + .institution-form-select,
+    #participantsform .institution-form-select:has(+ #formactionid) {
+        width: min(22rem, 100%) !important;
+        min-width: min(22rem, 100%) !important;
+
+        .institution-form-select__trigger {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .initialbar {
+            grid-template-columns: minmax(0, 1fr);
+            gap: .4rem;
+            padding: .6rem;
+
+            .initialbargroups {
+                // El carril de letras se desplaza dentro de su caja; nunca
+                // desborda la pantalla.
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        // === Formulario de filtros: todo apilado a una columna ============
+        .filter-group,
+        .filter-group [data-filterregion="filter"],
+        .filter-group [data-filterregion="filter"] fieldset,
+        .filter-group [data-filterregion="filter"] fieldset > .d-flex,
+        .filter-group [data-filterregion="filter"] fieldset > .d-flex > .d-flex,
+        [data-filterregion="filter-row"],
+        [data-filterregion="filter-row"] > .d-flex {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: .5rem !important;
+            width: 100% !important;
+        }
+
+        // Cada select / input del filtro, a todo el ancho.
+        .filter-group [data-filterregion="filter"] select,
+        .filter-group [data-filterregion="filter"] .form-select,
+        .filter-group [data-filterregion="filter"] .form-autocomplete-selection,
+        .filter-group [data-filterregion="filter"] .form-autocomplete-selection + input,
+        .filter-group [data-filterregion="filter"] [data-filterfield] {
+            width: 100% !important;
+            max-width: none !important;
+            min-width: 0 !important;
+        }
+
+        // Botón de quitar condición: a la derecha, sin ocupar una fila entera.
+        .filter-group [data-filteraction="remove"] {
+            align-self: flex-end;
+            width: auto !important;
+        }
+
+        // Barra de acciones (añadir / limpiar / aplicar): botones a lo ancho.
+        [data-filterregion="actions"],
+        .filter-group [data-filterregion="filter"] fieldset ~ .d-flex,
+        .filter-group .d-flex:has([data-filteraction="apply"]) {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr);
+            gap: .5rem !important;
+            width: 100%;
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        // Barra de acciones de la tabla ("Restablecer preferencias…", etc.).
+        #participantsform > .d-flex,
+        .table-dynamic .d-flex {
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        &,
+        #participantsform,
+        .filter-group {
+            font-size: .92rem;
+        }
+
+        .initialbar .page-item .page-link {
+            min-width: 1.95rem;
+            height: 1.95rem;
+            font-size: .8rem;
+        }
+    }
+}
+
+// Moodle agrega el selector de roles directamente al body mediante YUI. Sus
+// clases antiguas necesitan una superficie flotante explícita para no parecer
+// un campo desplazado debajo de la tabla.
+body.path-user > .popover.popover-bottom:has(.popover-title .btn-close) {
+    z-index: $zindex-popover !important;
+    display: none;
+    width: min(21rem, calc(100vw - 2rem));
+    max-width: min(21rem, calc(100vw - 2rem));
+    padding: 0;
+    overflow: visible;
+    color: $dark;
+    background-color: $white;
+    background-clip: padding-box;
+    border: 1px solid rgba($dark, .12);
+    border-radius: .75rem;
+    box-shadow: 0 18px 48px rgba($dark, .2), 0 4px 12px rgba($dark, .08);
+
+    > .arrow {
+        position: absolute;
+        top: -.45rem;
+        left: 1.25rem;
+        width: .85rem;
+        height: .85rem;
+        background-color: $white;
+        border-top: 1px solid rgba($dark, .12);
+        border-left: 1px solid rgba($dark, .12);
+        transform: rotate(45deg);
+    }
+
+    > .header.popover-title {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 3rem;
+        padding: .7rem .85rem;
+        background-color: $white;
+        border-bottom: 1px solid rgba($dark, .08);
+        border-radius: .75rem .75rem 0 0;
+
+        h3 {
+            margin: 0;
+            color: $dark;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .btn-close {
+            order: 2;
+            width: 1.9rem;
+            height: 1.9rem;
+            margin: 0;
+            padding: .4rem;
+            border-radius: 50%;
+            opacity: .65;
+
+            &:hover,
+            &:focus-visible {
+                background-color: $sunken;
+                opacity: 1;
+            }
+        }
+    }
+
+    > .content.popover-content {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr);
+        gap: .45rem;
+        align-items: stretch !important;
+        margin: 0 !important;
+        padding: .65rem;
+        background-color: $white;
+        border-radius: 0 0 .75rem .75rem;
+
+        .btn {
+            width: 100%;
+            margin: 0 !important;
+            padding: .6rem .75rem;
+            color: $dark;
+            font-weight: 600;
+            text-align: left;
+            background-color: $white;
+            border: 1px solid rgba($dark, .11);
+            border-radius: .5rem;
+            transition: color .15s ease, background-color .15s ease,
+                border-color .15s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: darken($primary, 8%);
+                background-color: $sunken;
+                border-color: rgba($primary, .28);
+                outline: 0;
+            }
+
+            &:disabled {
+                color: $secondary;
+                background-color: $light;
+                opacity: .65;
+            }
+        }
+    }
+}
+
+
+// Las tablas anchas se desplazan dentro de su contenedor, sin ensanchar la página.
+body.path-user #participantsform .table-responsive,
+body.path-user .userlist .table-responsive {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+}
+
+@include media-breakpoint-down(md) {
+    body.path-user .tertiary-navigation {
+        > .d-flex {
+            flex-wrap: wrap !important;
+            gap: .75rem;
+        }
+
+        .navitem {
+            min-width: 0;
+            max-width: 100%;
+            margin: 0 !important;
+        }
+    }
+}
+
+// El selector original sigue disponible para Moodle sin ocupar ancho fuera del filtro.
+body.path-user #region-main .filter-group select.institution-form-select__native {
+    width: 1px !important;
+    min-width: 0 !important;
+    max-width: 1px !important;
+}

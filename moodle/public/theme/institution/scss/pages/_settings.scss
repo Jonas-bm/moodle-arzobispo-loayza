@@ -1,0 +1,361 @@
+// Formularios de configuración: una sola superficie blanca sobre el lienzo
+// gris del sitio, sin tarjetas blancas anidadas ni cambios de color por capas.
+body#page-admin-setting-frontpagesettings {
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $white;
+        border: 1px solid rgba($dark, .08);
+        border-radius: .9rem;
+        box-shadow: 0 8px 24px rgba($dark, .07);
+    }
+
+    .secondary-navigation,
+    .secondary-navigation .navigation,
+    .secondary-navigation .moremenu,
+    .secondary-navigation .nav-tabs,
+    .secondary-navigation .more-nav,
+    .secondary-navigation .nav-item {
+        background: $white !important;
+    }
+
+    .secondary-navigation {
+        border-bottom: 1px solid rgba($dark, .07);
+        box-shadow: none;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main,
+    #adminsettings,
+    #adminsettings .settingsform,
+    #adminsettings fieldset.adminsettings,
+    #adminsettings .settingsform > fieldset {
+        background-color: transparent;
+        border-color: rgba($dark, .08);
+    }
+
+    #adminsettings {
+        h2 {
+            margin-bottom: 1.25rem;
+            color: $dark;
+            font-size: clamp(1.5rem, 2.2vw, 2rem);
+            letter-spacing: -.02em;
+        }
+
+        .form-item {
+            margin: 0;
+            padding: .9rem .25rem;
+            border-bottom: 1px solid rgba($dark, .065);
+
+            &:last-of-type {
+                border-bottom: 0;
+            }
+        }
+
+        // La configuración de portada contiene muchos controles cortos. Una
+        // cuadrícula de dos columnas aprovecha el lienzo y mantiene una lectura
+        // simétrica: etiqueta arriba, control y ayuda debajo.
+        .settingsform > fieldset {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem 1.25rem;
+
+            > .clearer {
+                display: none;
+            }
+
+            > .form-item {
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                padding: 1rem;
+                background-color: $white;
+                border: 1px solid rgba($dark, .085);
+                border-radius: .75rem;
+
+                // El editor necesita todo el ancho útil del formulario.
+                &#admin-summary {
+                    grid-column: 1 / -1;
+                }
+            }
+        }
+
+        .form-item {
+            > .form-label,
+            > .form-setting {
+                width: 100%;
+                max-width: none;
+                padding: 0;
+                text-align: left !important;
+            }
+
+            > .form-label {
+                margin-bottom: .7rem;
+
+                label,
+                > p {
+                    display: block;
+                    margin: 0;
+                    line-height: 1.35;
+                }
+            }
+
+            .form-shortname {
+                margin-top: .18rem;
+            }
+
+            .form-setting {
+                display: flex;
+                flex: 1 1 auto;
+                flex-direction: column;
+                align-items: flex-start;
+
+                > .form-text {
+                    width: 100%;
+                }
+
+                > .mb-3 {
+                    width: 100%;
+                    margin-bottom: 0 !important;
+
+                    br {
+                        display: none;
+                    }
+                }
+            }
+
+            input.form-control,
+            select.form-select,
+            select.custom-select,
+            .form-htmlarea,
+            .form-htmlarea .htmlarea,
+            .tox-tinymce {
+                display: block;
+                width: 100%;
+                max-width: none;
+            }
+
+            input[type="number"] {
+                max-width: 10rem;
+            }
+        }
+
+        #admin-summary {
+            > .form-setting,
+            [data-fieldtype="editor"],
+            .form-htmlarea,
+            .form-htmlarea .htmlarea,
+            .editor_atto_wrap,
+            .editor_atto,
+            textarea,
+            .tox.tox-tinymce {
+                display: block;
+                align-self: stretch;
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: none !important;
+            }
+
+            .tox-editor-container,
+            .tox-editor-header,
+            .tox-menubar,
+            .tox-toolbar-overlord,
+            .tox-toolbar__primary {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        .form-label label,
+        .form-label > p {
+            color: $dark;
+            font-weight: 600;
+        }
+
+        .form-shortname,
+        .form-defaultinfo,
+        .form-text {
+            color: $secondary !important;
+        }
+
+        .form-control,
+        .form-select,
+        .custom-select {
+            background-color: $white;
+            border-color: rgba($dark, .2);
+        }
+
+        .tox-tinymce {
+            overflow: hidden;
+            border: 1px solid rgba($dark, .15);
+            border-radius: .7rem;
+            box-shadow: 0 2px 8px rgba($dark, .045);
+        }
+
+        .btn-primary[type="submit"] {
+            margin-top: 1rem;
+        }
+
+        > .settingsform > .row:last-child {
+            justify-content: flex-end;
+            margin-top: .5rem;
+
+            > [class*="offset-"],
+            > [class*="col-"] {
+                width: auto;
+                margin-left: 0;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        #adminsettings .settingsform > fieldset {
+            grid-template-columns: minmax(0, 1fr);
+
+            > .form-item#admin-summary {
+                grid-column: auto;
+            }
+        }
+    }
+}
+
+// Select visual para formularios administrativos. El select original sigue
+// enviando el valor; este control aporta un menú claro, animado y alineado.
+.institution-form-select {
+    position: relative;
+    width: 100%;
+    margin-bottom: .45rem;
+
+    // Los selects numéricos cortos conservan una medida compacta, pero el
+    // botón y su panel de opciones comparten exactamente el mismo ancho.
+    &--compact {
+        width: 15rem !important;
+        min-width: 15rem !important;
+        max-width: calc(100vw - 3rem);
+
+        .institution-form-select__trigger {
+            width: 15rem !important;
+            min-width: 15rem !important;
+            max-width: calc(100vw - 3rem);
+        }
+    }
+
+    &__native {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+
+    &__trigger {
+        display: flex;
+        gap: .75rem;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 2.75rem;
+        padding: .55rem .8rem;
+        color: $dark;
+        text-align: left;
+        background-color: $white;
+        border: 1px solid rgba($dark, .2);
+        border-radius: $border-radius;
+        box-shadow: 0 1px 2px rgba($dark, .04);
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &:hover,
+        &:focus-visible,
+        &[aria-expanded="true"] {
+            border-color: $primary;
+            box-shadow: 0 0 0 .1rem rgba($primary, .12);
+        }
+
+        &:disabled {
+            color: $secondary;
+            background-color: $light;
+            cursor: not-allowed;
+            opacity: .75;
+        }
+    }
+
+    &__chevron {
+        color: $primary;
+        font-size: .85rem;
+        transition: transform .18s ease;
+    }
+
+    &__trigger[aria-expanded="true"] &__chevron {
+        transform: rotate(180deg);
+    }
+
+    &__menu {
+        padding: .4rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        background-color: $white;
+        border: 1px solid rgba($dark, .11);
+        border-radius: .7rem;
+        box-shadow: 0 16px 40px rgba($dark, .16), 0 3px 9px rgba($dark, .06);
+
+        &:not([hidden]) {
+            animation: institution-dropdown-in .2s cubic-bezier(.22, 1, .36, 1) both;
+        }
+
+        &[data-placement="top"]:not([hidden]) {
+            transform-origin: bottom center;
+        }
+
+        &[data-placement="bottom"]:not([hidden]) {
+            transform-origin: top center;
+        }
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 2.55rem;
+        padding: .58rem .75rem;
+        color: $dark;
+        text-align: left;
+        background: transparent;
+        border: 0;
+        border-radius: .45rem;
+        transition: color .14s ease, background-color .14s ease;
+
+        &:hover,
+        &:focus-visible,
+        &.is-selected {
+            color: darken($primary, 8%);
+            background-color: $sunken;
+            outline: 0;
+        }
+
+        &.is-selected {
+            font-weight: 700;
+        }
+    }
+
+    &__group {
+        padding: .55rem .75rem .3rem;
+        color: $secondary;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .025em;
+    }
+}
+

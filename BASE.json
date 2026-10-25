@@ -1,0 +1,8 @@
+{
+  "universidad": "Arzobispo Loaysa",
+  "identificador": "arzobispo-loaysa",
+  "puerto_local": 8081,
+  "commit_base": "3d4e884ad29b8815d50529f3fee2836a2ae308bb",
+  "incluye_cambios_locales_versionados": true,
+  "creado_utc": "2026-10-24T18:23:15.012732+00:00"
+}

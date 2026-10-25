@@ -1,0 +1,259 @@
+// Perfil de usuario ("Detalles de usuario", "Miscelánea", "Informes"…).
+//
+// Moodle renderiza cada categoría como `section.node_category.card` dentro de
+// `.profile_tree` (maquetado con `column-count: 2`). El tema le da un lenguaje
+// de tarjetas limpio sobre el lienzo, sin el marco blanco exterior, con
+// etiquetas tipo "ficha" y los enlaces de acción como botones. Solo estilo:
+// no cambia datos, enlaces ni permisos.
+
+// Aplica a todas las vistas de perfil (usan `pagelayout-mypublic`): "Mi
+// Perfil" (`/user/profile.php`) y el perfil dentro de un curso
+// (`/user/view.php`, que fija pagetype `course-view-*`). El rótulo "Mi
+// Perfil" y el ocultado de avatar/nombre/Mensaje se limitan a la primera vía
+// `&#page-user-profile`.
+body.pagelayout-mypublic {
+    // Fondo: el lienzo fuera, blanco solo en las tarjetas.
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: transparent !important;
+        border: 0;
+        box-shadow: none;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+
+    // --- Cabecera: solo en "Mi Perfil" (/user/profile.php) -----------------
+    // Ahí se recupera la cabecera solo para el rótulo "Mi Perfil" y se ocultan
+    // avatar, nombre real y botón "Mensaje". En el perfil dentro de un curso
+    // (/user/view.php) la cabecera de Moodle (avatar + nombre + Mensaje) se
+    // deja tal cual, porque ahí el nombre sí es contexto necesario.
+    &#page-user-profile #page-header {
+        display: block !important;
+
+        .page-header-image,
+        .header-actions-container,
+        .header-button-group {
+            display: none !important;
+        }
+
+        // El rótulo "Mi Perfil" se mete un poco hacia dentro.
+        @include media-breakpoint-up(lg) {
+            padding-left: 2.25rem;
+        }
+
+        .page-context-header {
+            display: block !important;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header-headings {
+            display: block !important;
+        }
+
+        // El h1 real contiene el nombre del usuario: se oculta su texto
+        // (font-size 0) y se sustituye por "Mi Perfil" con ::before.
+        .page-header-headings h1 {
+            display: block !important;
+            margin: 0;
+            font-size: 0 !important;
+            line-height: 1.2;
+
+            &::before {
+                color: $dark;
+                font-size: 1.55rem;
+                font-weight: 700;
+                letter-spacing: -.02em;
+                content: "Mi Perfil";
+            }
+        }
+
+        // Botón "Restablecer página a por defecto": fondo gris claro con borde
+        // para que se lea como un botón (el .btn-secondary del tema es blanco
+        // sobre blanco).
+        .singlebutton .btn {
+            color: $dark;
+            font-weight: 600;
+            background-color: $sunken;
+            border: 1px solid $hairline;
+            box-shadow: $shadow-sm;
+
+            &:hover,
+            &:focus-visible {
+                color: $dark;
+                background-color: darken($sunken, 4%);
+                border-color: rgba($dark, .22);
+            }
+        }
+    }
+
+    // Descripción / enlace al perfil completo, con aire.
+    .description {
+        margin-bottom: 1.5rem;
+        color: $ink-muted;
+    }
+
+    // --- Tarjetas: una sola columna a todo el ancho del contenido ----------
+    // Con contenido tan dispar entre categorías, dos columnas quedan
+    // descompensadas. Una columna, cada tarjeta al ancho completo y en su
+    // orden original.
+    .profile_tree {
+        max-width: none;
+        margin: .25rem 0 0;
+        column-count: 1 !important;
+        column-gap: 0;
+    }
+
+    // Cada categoría = tarjeta blanca.
+    .node_category.card {
+        display: block !important;
+        break-inside: avoid;
+        margin-bottom: 1.15rem;
+        overflow: hidden;
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &:hover {
+            border-color: rgba($primary, .22);
+            box-shadow: $shadow-md;
+        }
+
+        > .card-body {
+            padding: 1.15rem 1.35rem 1.25rem;
+        }
+
+        // Título de la categoría: filete de acento a la izquierda, como las
+        // cabeceras de bloque del resto del tema.
+        h3.lead {
+            position: relative;
+            margin: 0 0 .9rem;
+            padding-left: .7rem;
+            font-family: $font-family-sans-serif;
+            font-size: 1.02rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -.012em;
+            color: $dark;
+
+            &::before {
+                position: absolute;
+                top: .12em;
+                bottom: .12em;
+                left: 0;
+                width: 3px;
+                background-color: $accent;
+                border-radius: 2px;
+                content: "";
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 0;
+            padding: .62rem 0;
+            border-top: 1px solid $hairline;
+
+            &:first-child {
+                padding-top: 0;
+                border-top: 0;
+            }
+        }
+
+        dl {
+            margin: 0;
+        }
+
+        // Etiqueta tipo "ficha": versalita fina y apagada.
+        dt {
+            margin-bottom: .12rem;
+            color: $ink-muted;
+            font-size: .74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .045em;
+
+            a {
+                font-size: .95rem;
+                letter-spacing: normal;
+                text-transform: none;
+            }
+        }
+
+        dd {
+            margin: 0;
+            color: $dark;
+            line-height: 1.5;
+        }
+
+        a {
+            color: $link-color;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                text-decoration: underline;
+            }
+        }
+
+        // Listas de sólo enlaces ("Miscelánea", "Informes"): un enlace por fila.
+        li > span > a {
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        // "Editar perfil", "Ver más…": botón pequeño alineado a la derecha.
+        li.editprofile,
+        li.viewmore {
+            padding-top: .35rem;
+            text-align: right;
+            border-top: 0;
+
+            a {
+                display: inline-block;
+                padding: .4rem .85rem;
+                color: $primary;
+                font-size: .85rem;
+                font-weight: 600;
+                background-color: $surface;
+                border: 1px solid rgba($primary, .3);
+                border-radius: $border-radius-sm;
+
+                &:hover,
+                &:focus-visible {
+                    background-color: $sunken;
+                    border-color: rgba($primary, .5);
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+// Responsive: tarjetas de perfil con menos padding en pantallas pequeñas.
+@include media-breakpoint-down(sm) {
+    body.pagelayout-mypublic {
+        .node_category.card > .card-body {
+            padding: .95rem 1rem 1.05rem;
+        }
+
+        #page-header .page-header-headings h1::before {
+            font-size: 1.3rem;
+        }
+    }
+}

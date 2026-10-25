@@ -1,0 +1,9 @@
+// Fondo uniforme en el contenido de avisos, sin afectar las demás páginas.
+body.institution-announcements {
+    #region-main,
+    #region-main > [role="main"],
+    #region-main .list-group,
+    #region-main .list-group-item {
+        background-color: $white !important;
+    }
+}

@@ -1,0 +1,64 @@
+// Calendario completo: evita el corte entre el gris del lienzo y la gran
+// superficie blanca que genera el layout estándar de Boost.
+body.path-calendar {
+    background-color: $body-bg;
+
+    #page.drawers {
+        background-color: $body-bg;
+
+        .main-inner {
+            background-color: transparent;
+            border: 0;
+            box-shadow: none;
+        }
+    }
+
+    .maincalendar {
+        padding: map-get($spacers, 4);
+        background-color: $white;
+        border: 1px solid rgba($dark, .07);
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+
+        .calendar-controls {
+            margin-bottom: map-get($spacers, 3);
+
+            .current {
+                color: $dark;
+                font-weight: 700;
+            }
+        }
+
+        .calendarmonth {
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+            border: 1px solid rgba($dark, .08);
+            border-radius: $border-radius;
+
+            th {
+                color: $secondary;
+                font-size: $font-size-sm;
+                font-weight: 700;
+                background-color: $sunken;
+            }
+
+            td {
+                background-color: $white;
+                border-color: rgba($dark, .065);
+
+                &.today {
+                    background-color: $sunken;
+                }
+            }
+        }
+
+        .bottom {
+            width: 100%;
+            margin: map-get($spacers, 3) 0 0;
+            padding-top: map-get($spacers, 3);
+            border-top: 1px solid rgba($dark, .07);
+        }
+    }
+}
+

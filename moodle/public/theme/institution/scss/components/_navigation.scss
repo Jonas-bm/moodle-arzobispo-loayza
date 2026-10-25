@@ -1,0 +1,224 @@
+//
+// Institution — barra superior.
+//
+// Se usa la navbar horizontal estándar de Boost (Inicio, Área personal, Mis
+// cursos, Administración del sitio y el menú de usuario viven ahí). El tema
+// solo ajusta su acabado; no reubica la navegación.
+//
+
+.navbar {
+    box-shadow: $shadow-sm;
+    // Fondo blanco explícito (no el gris del lienzo).
+    background-color: $surface !important;
+    // Filete fino y neutro: la barra termina en una línea recta, sin el borde
+    // grueso de color que hacía que la pestaña activa pareciera "despegarse".
+    border-bottom: 1px solid $hairline;
+
+    .navbar-brand {
+        font-weight: 700;
+        letter-spacing: -.02em;
+        flex-shrink: 0;
+
+        .logo {
+            display: block;
+            width: auto;
+            height: 48px;
+            max-width: 208px;
+            max-height: 48px;
+            object-fit: contain;
+        }
+    }
+
+    // Mantener la identidad visible junto al menú móvil de Boost.
+    @include media-breakpoint-down(md) {
+        .navbar-brand:has(.logo) {
+            display: flex !important;
+            margin-right: .5rem !important;
+
+            .logo {
+                height: 32px;
+                max-width: 139px;
+                max-height: 32px;
+            }
+        }
+    }
+
+    @media (max-width: 380px) {
+        .navbar-brand:has(.logo) .logo {
+            height: 27px;
+            max-width: 117px;
+        }
+    }
+
+    // Controles del extremo derecho (mensajes, notificaciones, menú de usuario):
+    // realce suave en un rectángulo redondeado, sin subrayado.
+    .nav-link {
+        border-radius: $border-radius-sm;
+        transition: background-color .18s ease, color .18s ease;
+
+        &:hover,
+        &:focus-visible {
+            background-color: $sunken;
+        }
+    }
+
+    // Disparadores de menú (usuario, idioma, notificaciones, menús de acción):
+    // Boost/Bootstrap dibujan un contorno + box-shadow de foco que, al abrir el
+    // menú, queda como un recuadro cuadrado alrededor del botón mientras el
+    // menú está desplegado. Se elimina por completo en TODOS los estados
+    // —contorno, sombra y borde—. El único indicador es un relleno gris suave
+    // cuando el menú está abierto; sirve igual para ratón y para teclado.
+    .dropdown-toggle,
+    .nav-link[aria-expanded],
+    [data-bs-toggle="dropdown"],
+    #usernavigation .nav-link,
+    .usermenu .dropdown-toggle,
+    .langmenu .dropdown-toggle,
+    .action-menu .dropdown-toggle,
+    .action-menu-trigger .dropdown-toggle {
+        &,
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active,
+        &:focus-visible,
+        &[aria-expanded="true"],
+        &.show {
+            outline: 0 !important;
+            box-shadow: none !important;
+            border-color: transparent !important;
+        }
+
+        &[aria-expanded="true"],
+        &.show {
+            background-color: $sunken !important;
+        }
+    }
+}
+
+//
+// Navegación principal ("Página Principal / Área personal / Mis cursos").
+//
+// Boost marca el ítem activo con un fondo gris + un borde inferior de 3px que,
+// combinado con el border-radius del tema, se leía como una pestaña elevada y
+// con esquinas redondeadas. Aquí se sustituye por un subrayado plano, recto y
+// a ras de la barra, que entra y sale con una transición suave.
+//
+.primary-navigation .moremenu,
+.moremenu {
+    .nav-link {
+        position: relative;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        transition: color .2s ease;
+
+        // El subrayado es un pseudo-elemento: se puede animar con suavidad
+        // (escala horizontal) en lugar de aparecer de golpe.
+        &::after {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background-color: $primary;
+            transform: scaleX(0);
+            transform-origin: center;
+            opacity: 0;
+            transition: transform .26s cubic-bezier(.4, 0, .2, 1), opacity .18s ease;
+            content: "";
+        }
+
+        // Cualquier estado de foco/hover/activo: fondo transparente y sin
+        // sombra. Boost pinta un cuadro gris ($gray-100) y un box-shadow en
+        // :focus — eso es el "marco cuadrado" que parpadeaba al hacer clic.
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &:active {
+            color: $primary;
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        // Clic con ratón: sin ningún anillo ni contorno.
+        &:focus:not(:focus-visible) {
+            outline: 0 !important;
+        }
+
+        // Solo el teclado muestra un anillo, y fino, por dentro del enlace.
+        &:focus-visible {
+            outline: 2px solid $focus-ring-color;
+            outline-offset: -3px;
+        }
+
+        // Pista sutil solo al pasar el ratón o con foco de teclado —nunca en
+        // el :focus que deja un clic—.
+        &:hover::after,
+        &:focus-visible::after {
+            transform: scaleX(.55);
+            opacity: .3;
+        }
+
+        &.active,
+        &[aria-current="page"] {
+            color: $primary;
+            font-weight: 600;
+
+            &::after {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+
+            &:hover::after,
+            &:focus::after,
+            &:focus-visible::after {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.btn-primary {
+    font-weight: 600;
+}
+
+// --- Enlace "Acceder" de la barra (visitante sin identificar) --------------
+// Sin la línea vertical a su izquierda y con aspecto de botón.
+#usernavigation {
+
+    .divider {
+        display: none;
+    }
+
+    .usermenu .login {
+        padding: 0;
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .5rem 1.15rem;
+            color: $white;
+            font-weight: 700;
+            text-decoration: none;
+            background-color: $interactive;
+            border-radius: $border-radius;
+            transition: background-color .14s ease, box-shadow .14s ease;
+
+            &:hover,
+            &:focus-visible {
+                color: $white;
+                background-color: darken($interactive, 6%);
+                box-shadow: 0 6px 16px rgba($interactive, .3);
+            }
+        }
+    }
+}
+
+// La navegación superior indica la vista activa mediante el color del texto.
+.navbar .primary-navigation .moremenu .nav-link:not(.dropdown-item)::after {
+    display: none;
+}

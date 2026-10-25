@@ -1,0 +1,7 @@
+; Aplicar al php.ini usado por Apache. Reiniciar Apache después de editarlo.
+max_input_vars = 5000
+memory_limit = 512M
+upload_max_filesize = 100M
+post_max_size = 100M
+display_errors = Off
+log_errors = On

@@ -1,0 +1,482 @@
+// Vistas de foro (mod_forum): "Avisos", foros de debate, etc.
+//
+// Se alinea con el resto del tema: lienzo fuera, superficies blancas, líneas
+// `$hairline`, cabeceras de tabla en gris suave. Solo estilo.
+
+body.path-mod-forum {
+    // Mostrar una cabecera útil, en lugar de la barra de acciones vacía.
+    #page-header {
+        display: block !important;
+        margin-bottom: 1rem;
+
+        .page-context-header {
+            display: flex !important;
+            align-items: center;
+        }
+
+        .page-header-headings,
+        h1 {
+            display: block !important;
+        }
+
+        h1 {
+            font-size: clamp(1.25rem, 2vw, 1.65rem);
+            line-height: 1.3;
+        }
+
+        .breadcrumb a,
+        .breadcrumb-item,
+        .breadcrumb-item::before {
+            color: $ink-muted;
+        }
+
+        #page-navbar {
+            flex: 1 1 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .breadcrumb {
+            flex-wrap: wrap;
+            max-width: 100%;
+            margin: 0 0 .75rem;
+            padding: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .header-actions-container:not(:has(.header-action:not(:empty))):not(:has(button, a, input, select)) {
+            display: none;
+        }
+    }
+
+    // Moodle puede incluir sólo un texto oculto y un contenedor sin controles.
+    // Las descripciones y los controles de finalización reales se conservan.
+    .activity-header:not(:has(.activity-description, [data-region="activity-information"] > *)) {
+        display: none;
+    }
+
+    &,
+    #page-wrapper,
+    #page.drawers {
+        background-color: $body-bg !important;
+    }
+
+    #page-content,
+    #region-main-box,
+    #region-main {
+        background-color: transparent !important;
+    }
+
+    #page.drawers .main-inner {
+        background-color: $surface !important;
+        border: 1px solid rgba($dark, .08) !important;
+        border-radius: $border-radius-lg !important;
+        box-shadow: $shadow-sm !important;
+    }
+
+    // Cajas que Moodle pinta de gris → blancas con borde fino.
+    .box,
+    .generalbox,
+    .forumsummary,
+    [data-region="activity-information"],
+    .activity-description,
+    .activity-header,
+    div[class*="bg-light"],
+    .card > .card-body[class*="bg-light"] {
+        color: $dark;
+        background-color: $surface !important;
+    }
+
+    .box,
+    .generalbox,
+    [data-region="activity-information"],
+    .activity-header {
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+    }
+
+    // Cabecera de la lista de discusiones.
+    .discussion-list.generaltable thead th,
+    .forumheaderlist thead th,
+    table.discussion-list thead th {
+        color: $ink-muted;
+        font-weight: 700;
+        background-color: $sunken;
+    }
+
+    .discussion-list.generaltable,
+    .forumheaderlist {
+        border-color: $hairline;
+
+        td,
+        th {
+            border-color: $hairline;
+        }
+
+        tbody tr:hover td {
+            background-color: rgba($primary, .03);
+        }
+    }
+
+    // Cada publicación.
+    .forumpost,
+    .forum-post-container {
+        background-color: $surface;
+        border-color: $hairline !important;
+        border-radius: $border-radius;
+    }
+
+    // Buscador "Buscar en los foros".
+    .simplesearchform,
+    .forumsearch {
+        .form-control,
+        input[type="text"] {
+            background-color: $surface;
+        }
+    }
+
+    // Dos filas de controles con columnas, márgenes y alturas compartidos.
+    .tertiary-navigation:has(.simplesearchform),
+    [data-content="forum-discussion"] > .d-flex:first-child {
+        width: 100%;
+        min-width: 0;
+        margin: 0 0 .75rem !important;
+        padding: .875rem 1rem;
+        background-color: $canvas;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+    }
+
+    .tertiary-navigation:has(.simplesearchform) > .d-flex,
+    [data-content="forum-discussion"] > .d-flex:first-child {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: .75rem 1rem;
+        align-items: center;
+
+        > div:empty,
+        > .navitem:not(:has(*)) {
+            display: none !important;
+        }
+
+        > div,
+        > .navitem {
+            min-width: 0;
+            margin: 0 !important;
+        }
+
+        > .navitem {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        > .navitem:has(.simplesearchform) > a[role="button"] {
+            order: 2;
+            flex-shrink: 0;
+            margin: 0 !important;
+        }
+
+        .simplesearchform,
+        .singleselect {
+            width: 100%;
+            max-width: 30rem;
+            margin: 0;
+        }
+
+        .simplesearchform .input-group,
+        .singleselect form {
+            width: 100%;
+        }
+
+        .form-control,
+        .form-select,
+        .btn:not(.icon-no-margin) {
+            height: 2.75rem;
+            min-height: 2.75rem;
+            padding-block: .55rem;
+        }
+
+        .singleselect select {
+            width: 100%;
+            height: 2.75rem !important;
+            min-height: 2.75rem !important;
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+
+            .simplesearchform,
+            .singleselect {
+                max-width: none;
+            }
+
+            > .navitem > a:not(.icon-no-margin),
+            [data-container="discussion-tools"],
+            [data-container="discussion-tools"] > .dropdown,
+            [data-container="discussion-tools"] .dropdown-toggle {
+                width: 100%;
+            }
+        }
+    }
+
+    // Una sola tarjeta por publicación, con cabecera, contenido y acciones.
+    .forum-post-container:has(> .forumpost) {
+        border: 0 !important;
+        box-shadow: none;
+    }
+
+    .forumpost[data-content="forum-post"] {
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        box-shadow: $shadow-sm;
+
+        > [data-region-content="forum-post-core"] {
+            min-width: 0;
+        }
+
+        > [data-region-content="forum-post-core"] > .header {
+            gap: .75rem;
+            margin-bottom: 0 !important;
+            padding: 1rem 1.25rem;
+            background-color: $canvas;
+            border-bottom: 1px solid $hairline;
+            border-radius: $border-radius $border-radius 0 0;
+
+            h3 {
+                margin-bottom: .3rem !important;
+                font-size: 1.05rem;
+                line-height: 1.4;
+            }
+
+            .mb-3 {
+                margin-bottom: 0 !important;
+            }
+
+            time {
+                color: $ink-muted;
+                font-size: .85rem;
+            }
+        }
+
+        .body-content-container,
+        .content-alignment-container {
+            min-width: 0;
+        }
+
+        .post-content-container {
+            padding: 1.25rem;
+            overflow-wrap: anywhere;
+            line-height: 1.65;
+
+            > :last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        [data-region="post-actions-container"] {
+            gap: .5rem;
+            width: 100%;
+            margin: 0 !important;
+            padding: .75rem 1.25rem !important;
+            border-top: 1px solid $hairline;
+
+            a[data-region="post-action"] {
+                min-height: 2.75rem;
+                margin: 0;
+                padding: .55rem .85rem;
+                font-size: .9rem;
+                font-weight: 600;
+                border-radius: $border-radius-sm;
+
+                &[data-action="collapsible-link"] {
+                    color: $white !important;
+                    background-color: $interactive;
+
+                    &:hover {
+                        background-color: darken($interactive, 7%);
+                    }
+                }
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            > [data-region-content="forum-post-core"] > .header,
+            .post-content-container {
+                padding: 1rem;
+            }
+
+            [data-region="post-actions-container"] {
+                padding: .75rem 1rem !important;
+            }
+        }
+    }
+}
+
+// Vista principal: descripción integrada y herramientas separadas del contenido.
+body#page-mod-forum-view {
+    #page-header {
+        margin: 0 0 .85rem;
+        padding: 0;
+
+        .page-context-header {
+            margin-bottom: 0;
+            padding: 0;
+        }
+    }
+
+    // Cabecera, descripción, herramientas y publicaciones comparten el mismo eje.
+    #page-content {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    #region-main-box,
+    #region-main {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    #region-main .activity-header:not(:empty) {
+        margin: 0 0 1rem;
+        padding: 0;
+        background: $white !important;
+        border: 0;
+        border-radius: 0;
+
+        .activity-description {
+            margin: 0;
+            padding: 0;
+            color: $ink-muted;
+            border: 0;
+            line-height: 1.6;
+
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        [data-region="activity-information"]:not(:has(*)) {
+            display: none;
+        }
+
+        [data-region="activity-information"] {
+            border: 0;
+        }
+    }
+
+    .tertiary-navigation:has(.simplesearchform) {
+        margin: 0 0 1rem !important;
+        padding: .75rem 0;
+        background: $white;
+        border: 0;
+        border-bottom: 1px solid $hairline;
+        border-radius: 0;
+
+        > .d-flex {
+            display: flex !important;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+
+            > .navitem:has(.simplesearchform) {
+                flex: 0 1 28rem;
+                margin-left: 0 !important;
+            }
+        }
+    }
+
+    [id^="discussion-list-"] > .py-3:not(:has(*)) {
+        display: none;
+    }
+
+    .forumnodiscuss:has(.institution-forum-empty) {
+        margin: .5rem 0 0;
+        padding: 2rem 1.25rem;
+        color: $ink-muted;
+        text-align: center;
+        background: $white;
+        border: 1px solid $hairline;
+        border-radius: $border-radius;
+        box-shadow: none;
+    }
+
+    .institution-forum-empty {
+        max-width: 32rem;
+        margin: 0 auto;
+
+        > i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            margin-bottom: .8rem;
+            color: $primary;
+            background: rgba($primary, .06);
+            border-radius: 50%;
+        }
+
+        h3 {
+            margin: 0 0 .5rem;
+            color: $dark;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0;
+            font-size: .95rem;
+            line-height: 1.6;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .tertiary-navigation:has(.simplesearchform) > .d-flex > .navitem:has(.simplesearchform) {
+            flex-basis: 100%;
+            width: 100%;
+        }
+
+        .forumnodiscuss:has(.institution-forum-empty) {
+            padding: 1.5rem 1rem;
+        }
+    }
+}
+
+// Un solo margen interior: evitar gutters añadidos por los contenedores de Boost.
+body#page-mod-forum-view {
+    #page-header .page-header-image,
+    #page-header .page-header-headings {
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    #page-header .page-context-header {
+        gap: .85rem;
+    }
+
+    #page-header .activityiconcontainer {
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+
+        .activityicon {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    #region-main,
+    #region-main > [role="main"],
+    #region-main > [role="main"] > .container-fluid,
+    #region-main .tertiary-navigation.container-fluid {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    #region-main > [role="main"],
+    #region-main > [role="main"] > .container-fluid {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}

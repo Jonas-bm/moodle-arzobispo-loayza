@@ -1,0 +1,506 @@
+// =============================================================================
+// Página de acceso — "Institution"
+// Diseño a dos columnas para una institución educativa: a la izquierda un
+// panel de marca (degradado institucional + patrón sutil + mensaje de
+// bienvenida); a la derecha el formulario, limpio y prominente. En móvil el
+// panel pasa a ser una franja superior y el formulario ocupa el ancho.
+// Solo CSS: no se tocan plantillas ni la lógica de autenticación.
+// =============================================================================
+
+body.pagelayout-login {
+    min-height: 100vh;
+    background-color: $canvas;
+    color: $dark;
+
+    // El pie de página de Moodle ("Usted no se ha identificado", "Cambiar al
+    // tema estándar", "Desarrollado por Moodle"…) sobra en el acceso: el
+    // idioma y el aviso de cookies ya están en la propia tarjeta.
+    #page-footer,
+    footer#page-footer,
+    #page > footer,
+    .footer-popover,
+    .footer-content-popover,
+    .btn-footer-popover,
+    #footer,
+    .pagelayout-login #page-footer {
+        display: none !important;
+    }
+
+    // --- Panel de marca (izquierda) -----------------------------------------
+    #page {
+        position: relative;
+        max-width: none !important;
+        min-height: 100vh;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    // Fondo del panel: degradado + luces suaves + patrón de puntos.
+    #page::before {
+        display: block;
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 54vw;
+        background-color: darken($primary, 6%);
+        background-image:
+            radial-gradient(circle at 18% 12%, rgba($white, .16), transparent 42%),
+            radial-gradient(circle at 88% 88%, rgba(#000, .28), transparent 46%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='2' cy='2' r='1.4' fill='%23ffffff' fill-opacity='0.10'/%3E%3C/svg%3E"),
+            linear-gradient(140deg, darken($primary, 12%) 0%, $primary 52%, #2c6fa6 100%);
+        background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+        content: "";
+    }
+
+    // Mensaje de bienvenida sobre el panel.
+    #page::after {
+        position: fixed;
+        top: 50%;
+        left: 6vw;
+        z-index: 1;
+        display: block;
+        max-width: min(38vw, 26rem);
+        color: $white;
+        font-family: "Source Serif 4", $font-family-serif;
+        font-size: clamp(2rem, 3.6vw, 3.2rem);
+        font-weight: 600;
+        line-height: 1.12;
+        letter-spacing: -.02em;
+        text-shadow: 0 2px 18px rgba(#000, .18);
+        transform: translateY(-50%);
+        content: "Tu campus, siempre contigo.";
+    }
+
+    // Bajada / lema, debajo del titular.
+    &::before {
+        position: fixed;
+        top: calc(50% + 7rem);
+        left: 6vw;
+        z-index: 1;
+        display: block;
+        max-width: min(34vw, 24rem);
+        color: rgba($white, .82);
+        font-family: $font-family-sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        content: "Accede a tus cursos, calificaciones y avisos desde cualquier lugar.";
+    }
+
+    // --- Zona del formulario (derecha) ------------------------------------
+    #page-content,
+    #page-content.row {
+        display: flex;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    #region-main-box,
+    #region-main {
+        display: flex;
+        flex: 1 1 auto;
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .login-wrapper {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin-left: 54vw;               // deja sitio al panel fijo
+        padding: 3.5rem 2.5rem;
+        background-color: $canvas;
+    }
+
+    // Boost fuerza `.login-container { width: 500px !important }`; se anula
+    // para poder controlar el ancho desde aquí.
+    .login-container {
+        flex: 0 1 auto;
+        width: 100% !important;
+        max-width: 31rem !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border: 0;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    // --- Tarjeta del formulario ------------------------------------------
+    .loginform {
+        width: 100%;
+        padding: 3rem 2.85rem 2.6rem;
+        background-color: $surface;
+        border: 1px solid $hairline;
+        border-radius: $border-radius-lg;
+        box-shadow: 0 30px 70px rgba($dark, .14), 0 6px 16px rgba($dark, .06);
+
+        // Todas las secciones del formulario siempre visibles.
+        > .login-divider,
+        > h2.login-heading,
+        > .login-instructions,
+        > .login-signup,
+        > .login-identityproviders,
+        > form#guestlogin {
+            display: block !important;
+        }
+    }
+
+    h1.login-heading {
+        margin: 0 0 .4rem;
+        color: $dark;
+        font-family: $font-family-sans-serif;
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -.02em;
+    }
+
+    // Subtítulo generado bajo el título principal.
+    h1.login-heading::after {
+        display: block;
+        margin-top: .3rem;
+        color: $ink-muted;
+        font-size: .95rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        content: "Introduce tus datos para continuar";
+    }
+
+    .login-form {
+        margin-top: 2rem;
+    }
+
+    // Campos: grandes, con icono a la izquierda.
+    .login-form-username,
+    .login-form-password {
+        position: relative;
+        isolation: isolate;
+        margin-bottom: 1.2rem !important;
+
+        &::before {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            // Boost eleva el input enfocado a z-index: 5.
+            z-index: 6;
+            color: $ink-muted;
+            font: var(--fa-font-solid);
+            font-size: .95rem;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+    }
+
+    .login-form-username::before {
+        content: "\f007";               // fa-user
+    }
+
+    .login-form-password::before {
+        content: "\f023";               // fa-lock
+    }
+
+    #username,
+    #password {
+        width: 100%;
+        height: 3.4rem;
+        padding: .8rem 1rem .8rem 2.9rem;
+        color: $dark;
+        font-size: 1rem;
+        background-color: $surface;
+        border: 1px solid rgba($dark, .2);
+        border-radius: $border-radius;
+        box-shadow: none;
+        transition: border-color .16s ease, box-shadow .16s ease;
+
+        &::placeholder {
+            color: $ink-muted;
+        }
+
+        &:hover {
+            border-color: rgba($primary, .5);
+        }
+
+        &:focus,
+        &:focus-visible {
+            border-color: $primary;
+            box-shadow: 0 0 0 .18rem rgba($interactive, .16);
+            outline: 0;
+        }
+    }
+
+    // Botón "Acceder": ancho completo, degradado, con relieve.
+    .login-form-submit {
+        margin-top: 1.6rem;
+        margin-bottom: 1.1rem !important;
+    }
+
+    #loginbtn {
+        width: 100%;
+        height: 3.4rem;
+        color: $white;
+        font-size: 1.02rem;
+        font-weight: 700;
+        letter-spacing: .01em;
+        background-image: linear-gradient(135deg, $interactive, darken($primary, 2%));
+        border: 0;
+        border-radius: $border-radius;
+        box-shadow: 0 10px 24px rgba($interactive, .3);
+        transition: transform .14s ease, box-shadow .14s ease, filter .14s ease;
+
+        &:hover,
+        &:focus-visible {
+            filter: brightness(1.05);
+            box-shadow: 0 14px 30px rgba($interactive, .38);
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 16px rgba($interactive, .3);
+        }
+    }
+
+    .login-form-forgotpassword {
+        margin-bottom: 0 !important;
+        text-align: right;
+
+        a {
+            color: $link-color;
+            font-size: .88rem;
+            font-weight: 600;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    // --- Separadores y secciones secundarias -----------------------------
+    .login-divider {
+        height: 1px;
+        margin: 2.1rem 0;
+        background-color: $hairline;
+        border: 0;
+    }
+
+    h2.login-heading {
+        margin: 0 0 1rem;
+        color: $dark;
+        font-family: $font-family-sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -.01em;
+    }
+
+    .login-instructions {
+        margin-bottom: 1rem;
+        color: $ink-muted;
+        font-size: .95rem;
+        line-height: 1.55;
+    }
+
+    // Botones secundarios (invitado, registro, proveedores externos): contorno
+    // del tema y a todo el ancho.
+    .login-signup .btn,
+    #guestlogin .btn,
+    .login-identityprovider-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 3rem;
+        padding: .6rem 1.1rem;
+        color: $primary;
+        font-weight: 600;
+        background-color: $surface;
+        border: 1px solid rgba($primary, .3);
+        border-radius: $border-radius;
+
+        &:hover,
+        &:focus-visible {
+            color: darken($primary, 6%);
+            background-color: $sunken;
+            border-color: rgba($primary, .5);
+        }
+    }
+
+    #guestlogin {
+        margin: 0;
+    }
+
+    .login-identityprovider-btn {
+        margin-bottom: .6rem;
+    }
+
+    // --- Pie: idioma + aviso de cookies ---------------------------------
+    .loginform > .d-flex:last-child {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .9rem;
+        margin-top: .25rem;
+        font-size: .85rem;
+
+        .login-languagemenu .btn,
+        > .btn {
+            padding: .4rem .75rem;
+            color: $ink-muted;
+            font-size: .82rem;
+            font-weight: 600;
+            background-color: transparent;
+            border: 1px solid $hairline;
+            border-radius: $border-radius-sm;
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                background-color: $sunken;
+            }
+        }
+
+        .divider.border-start {
+            display: none;
+        }
+    }
+
+    // Alertas de error/info dentro del formulario.
+    .loginform .alert {
+        margin-bottom: 1rem;
+        font-size: .9rem;
+    }
+
+    // =====================================================================
+    // Responsive: por debajo de 992px el panel pasa a franja superior y el
+    // formulario va justo debajo, SIN solaparse (así el título nunca queda
+    // tapado por la banda).
+    // =====================================================================
+    @include media-breakpoint-down(lg) {
+        #page {
+            display: flex;
+            flex-direction: column;
+        }
+
+        // En móvil: SIN banda ni degradado. Todo el fondo es el lienzo gris y
+        // la tarjeta va centrada encima.
+        #page,
+        #page-wrapper,
+        #page-content,
+        .login-wrapper {
+            background-color: $body-bg !important;
+            background-image: none !important;
+        }
+
+        #page::before,
+        #page::after,
+        &::before,
+        &::after {
+            display: none !important;
+        }
+
+        #page-content,
+        #page-content.row,
+        #region-main-box,
+        #region-main {
+            display: block;
+            min-height: 0;
+        }
+
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 1rem 2.5rem;
+        }
+
+        .login-container {
+            max-width: 26rem !important;
+        }
+
+        .loginform {
+            margin-top: 0;
+            padding: 2rem 1.4rem 1.6rem;
+        }
+
+        h1.login-heading {
+            font-size: 1.35rem;
+        }
+
+        #username,
+        #password,
+        #loginbtn {
+            height: 3.2rem;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .login-wrapper {
+            padding: 1.25rem .85rem 2rem;
+        }
+
+        .loginform {
+            padding: 1.75rem 1.15rem 1.4rem;
+        }
+
+        // Idioma y cookies apilados en pantallas muy estrechas.
+        .loginform > .d-flex:last-child {
+            flex-direction: column;
+            align-items: stretch;
+
+            > * {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}
+
+// Botón de mostrar/ocultar contraseña (lo inyecta Moodle por JS): alineado
+// dentro del campo, discreto, en cualquier anchura.
+body.pagelayout-login {
+    .login-form-password {
+        position: relative;
+
+        // El envoltorio que a veces añade el JS no debe romper la maqueta.
+        .passwordunmask,
+        [data-passwordunmask] {
+            display: block;
+        }
+
+        #password {
+            padding-right: 3rem;
+        }
+
+        .btn,
+        a[role="button"],
+        button:not([type="submit"]),
+        [data-passwordunmask-toggle],
+        .passwordunmask-toggle {
+            position: absolute;
+            top: 50%;
+            right: .55rem;
+            bottom: auto;
+            z-index: 7;
+            width: auto;
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: .3rem .45rem;
+            color: $ink-muted;
+            font-size: .95rem;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+            transform: translateY(-50%);
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                background: transparent;
+            }
+        }
+    }
+}
