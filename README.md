@@ -1,10 +1,31 @@
 # Moodle · Arzobispo Loayza
 
-Proyecto Moodle 5.1.3 con el tema institucional `institution` y el diseño de Loayza.
-Esta guía instala una copia nueva **en tu computadora, sin Docker**.
+**Empieza aquí:** este es el README principal para instalar y ejecutar este proyecto.
+El archivo `moodle/README.md` es la documentación original del software Moodle;
+se conserva como parte del código de origen.
 
-El repositorio contiene código y diseño. No contiene la base de datos, usuarios,
-cursos ni archivos subidos de la instalación de pruebas.
+Proyecto Moodle 5.1.3 con el tema institucional `institution` y el diseño de Loayza.
+El repositorio contiene código y diseño; no incluye la base de datos, usuarios,
+cursos ni archivos subidos de otra instalación.
+
+## Elegir cómo instalar
+
+Para Docker, `.env` debe estar en esta misma carpeta, junto a `docker-compose.yml`.
+Docker Compose lo carga automáticamente al ejecutar los comandos desde aquí.
+Cada persona lo crea copiando `.env.example`; `.env` no se sube al repositorio.
+
+| Modalidad | Qué instalar en tu computadora | Instrucciones |
+| --- | --- | --- |
+| Con Docker | Docker Desktop; Git es opcional si descargas ZIP. | [Instalación con Docker](documentacion/INSTALACION_DOCKER.md) |
+| Sin Docker | Apache, PHP y MariaDB. | Sigue los pasos 1 a 8 de este README. |
+
+En ambas modalidades crearás tu propia cuenta administradora durante el asistente.
+Las contraseñas de MariaDB las eliges al preparar la instalación; son distintas
+al acceso de Moodle. No hay una cuenta o contraseña compartida para quienes clonen.
+El diseño viene incluido, pero debes activarlo después de instalar siguiendo
+la guía de la modalidad elegida.
+
+## Instalación sin Docker
 
 ## 1. Descargar el proyecto
 
@@ -172,7 +193,7 @@ de datos demo en la instalación nueva.
 - [Apache local](configuracion/apache-local.conf.example).
 - [PHP local](configuracion/php-local.ini.example).
 - [Configuración local de referencia](moodle/config.local.php.example).
-- [Desarrollo con Docker](documentacion/DESARROLLO_DOCKER.md): referencia opcional del entorno original; no se usa en esta guía.
+- [Instalación con Docker](documentacion/INSTALACION_DOCKER.md): alternativa completa usando contenedores.
 
 Para publicar en Internet, el responsable del servidor debe configurar dominio,
 HTTPS, correo, respaldos y permisos seguros. Protege `config.php` contra escritura
